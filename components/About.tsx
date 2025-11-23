@@ -3,6 +3,9 @@ import { motion, useScroll, AnimatePresence, useInView } from 'framer-motion';
 import { SectionId } from '../types';
 import { Cpu, Lock, Network, ShieldCheck } from 'lucide-react';
 
+// Fix: Cast motion to any to avoid type errors with IntrinsicAttributes
+const M = motion as any;
+
 const RandomTicker: React.FC<{ min: number; max: number; suffix: string }> = ({ min, max, suffix }) => {
   const [val, setVal] = useState(min);
 
@@ -21,7 +24,7 @@ const ParticleBackground = () => {
     <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
        {/* 1. Rising Data Streams (Vertical Flow) */}
        {[...Array(12)].map((_, i) => (
-          <motion.div
+          <M.div
              key={`stream-${i}`}
              className="absolute bg-gradient-to-t from-transparent via-white/10 to-transparent"
              initial={{
@@ -48,7 +51,7 @@ const ParticleBackground = () => {
 
        {/* 2. Twinkling Network Nodes */}
        {[...Array(40)].map((_, i) => (
-          <motion.div
+          <M.div
              key={`node-${i}`}
              className="absolute rounded-full bg-white"
              style={{
@@ -104,7 +107,7 @@ const ProbabilityCertaintyVisualizer: React.FC<{ isActive: boolean }> = ({ isAct
     return (
         <div className="relative w-full h-full flex items-center justify-center">
             {/* Connecting Lines (Only visible when Ordered) */}
-            <motion.svg 
+            <M.svg 
                 className="absolute inset-0 w-full h-full pointer-events-none"
                 style={{ overflow: 'visible' }}
                 initial={{ opacity: 0 }}
@@ -116,11 +119,11 @@ const ProbabilityCertaintyVisualizer: React.FC<{ isActive: boolean }> = ({ isAct
                     <path d="M60 0 L30 51.96 L-30 51.96 L-60 0 L-30 -51.96 L30 -51.96 Z" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
                     <path d="M0 0 L60 0 M0 0 L30 51.96 M0 0 L-30 51.96 M0 0 L-60 0 M0 0 L-30 -51.96 M0 0 L30 -51.96" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
                 </g>
-            </motion.svg>
+            </M.svg>
 
             <div className="relative w-[320px] h-[320px] flex items-center justify-center">
                 {gridPoints.map((point, i) => (
-                    <motion.div
+                    <M.div
                         key={i}
                         className="absolute rounded-full bg-white shadow-[0_0_10px_white]"
                         initial={{ x: chaosPoints[i].x, y: chaosPoints[i].y, opacity: 0.5, scale: chaosPoints[i].scale }}
@@ -143,7 +146,7 @@ const ProbabilityCertaintyVisualizer: React.FC<{ isActive: boolean }> = ({ isAct
                 ))}
 
                 {/* Central Core Pulse */}
-                <motion.div
+                <M.div
                     className="absolute inset-0 border border-white/20 rounded-full"
                     animate={{ scale: isActive ? [1, 1.2, 1] : 0.8, opacity: isActive ? 0.2 : 0 }}
                     transition={{ duration: 2, repeat: Infinity }}
@@ -179,7 +182,7 @@ const About: React.FC = () => {
           
           {/* Content Side */}
           <div className="flex flex-col justify-center">
-             <motion.div 
+             <M.div 
                initial="hidden"
                whileInView="visible"
                viewport={{ once: true }}
@@ -187,16 +190,16 @@ const About: React.FC = () => {
                   visible: { transition: { staggerChildren: 0.05 } }
                }}
              >
-                <motion.h2 
+                <M.h2 
                    variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
                    className="text-white font-mono text-xs tracking-[0.2em] uppercase mb-8"
                 >
                   <span className="text-brand-muted">//</span> The Engine
-                </motion.h2>
+                </M.h2>
 
                 <h3 className="font-heading font-bold text-4xl md:text-6xl text-white mb-12 leading-[1.1] tracking-tighter flex flex-wrap gap-x-3 gap-y-1">
                    {words.map((word, i) => (
-                      <motion.span 
+                      <M.span 
                         key={i}
                         variants={{
                            hidden: { y: 20, opacity: 0 },
@@ -204,11 +207,11 @@ const About: React.FC = () => {
                         }}
                       >
                          {word}
-                      </motion.span>
+                      </M.span>
                    ))}
                 </h3>
                 
-                <motion.div 
+                <M.div 
                    variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { delay: 0.5 } } }}
                    className="space-y-12"
                 >
@@ -235,8 +238,8 @@ const About: React.FC = () => {
                         </p>
                       </div>
                    </div>
-                </motion.div>
-             </motion.div>
+                </M.div>
+             </M.div>
           </div>
 
           {/* Visual Side */}
@@ -251,7 +254,7 @@ const About: React.FC = () => {
              <ParticleBackground />
              
              {/* Scanning Laser Beam */}
-             <motion.div 
+             <M.div 
                 className="absolute left-0 right-0 h-[2px] bg-white/20 shadow-[0_0_15px_rgba(255,255,255,0.3)] z-0"
                 initial={{ top: "-5%" }}
                 animate={{ top: "105%" }}
@@ -265,14 +268,14 @@ const About: React.FC = () => {
                        <div className={`w-1.5 h-1.5 rounded-full transition-colors duration-300 ${isActive ? 'bg-green-500 shadow-[0_0_8px_#22c55e] animate-pulse' : 'bg-red-500'}`}></div>
                        <span className="text-white/70">SYS_ROOT_ACCESS</span>
                    </div>
-                   <motion.div 
+                   <M.div 
                         key={isActive ? "lock" : "drift"}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         className={`transition-colors duration-300 font-bold ${isActive ? 'text-green-400' : 'text-red-400'}`}
                    >
                       {isActive ? "DETERMINISTIC_LOCK" : "PROBABILISTIC_DRIFT"}
-                   </motion.div>
+                   </M.div>
                 </div>
                 
                 {/* Central Probability/Certainty Diagram */}

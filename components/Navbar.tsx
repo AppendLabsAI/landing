@@ -1,8 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { NAV_ITEMS } from '../constants';
 import { motion, AnimatePresence } from 'framer-motion';
+
+// Fix: Cast motion to any to avoid type errors with IntrinsicAttributes
+const M = motion as any;
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +81,7 @@ const Navbar: React.FC = () => {
         Z-Index 60 to sit above the full screen menu (Z-50)
       */}
       <div className="fixed top-0 left-0 right-0 z-[60] flex justify-center pt-2 md:pt-4 pointer-events-none">
-        <motion.nav
+        <M.nav
           layout // Enables smooth layout transitions
           initial={false}
           animate={{
@@ -138,7 +140,7 @@ const Navbar: React.FC = () => {
             <div className="relative w-6 h-6 flex items-center justify-center">
                 <AnimatePresence mode="wait">
                   {isOpen ? (
-                      <motion.div 
+                      <M.div 
                         key="close" 
                         initial={{ rotate: -90, opacity: 0 }} 
                         animate={{ rotate: 0, opacity: 1 }} 
@@ -146,9 +148,9 @@ const Navbar: React.FC = () => {
                         transition={{ duration: 0.2 }}
                       >
                           <X size={24} />
-                      </motion.div>
+                      </M.div>
                   ) : (
-                      <motion.div 
+                      <M.div 
                         key="menu" 
                         initial={{ rotate: 90, opacity: 0 }} 
                         animate={{ rotate: 0, opacity: 1 }} 
@@ -156,12 +158,12 @@ const Navbar: React.FC = () => {
                         transition={{ duration: 0.2 }}
                       >
                           <Menu size={24} />
-                      </motion.div>
+                      </M.div>
                   )}
                 </AnimatePresence>
             </div>
           </button>
-        </motion.nav>
+        </M.nav>
       </div>
 
       {/* 
@@ -170,7 +172,7 @@ const Navbar: React.FC = () => {
       */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <M.div
             variants={menuContainerVariants}
             initial="closed"
             animate="open"
@@ -184,7 +186,7 @@ const Navbar: React.FC = () => {
              <div className="flex-1 flex flex-col justify-center px-8 pb-20 pt-32 overflow-y-auto">
                 <div className="flex flex-col gap-6">
                     {NAV_ITEMS.map((item, i) => (
-                    <motion.div
+                    <M.div
                         key={item.label}
                         custom={i}
                         variants={linkVariants}
@@ -200,11 +202,11 @@ const Navbar: React.FC = () => {
                                 {item.label}
                             </span>
                         </a>
-                    </motion.div>
+                    </M.div>
                     ))}
                 </div>
                 
-                <motion.div 
+                <M.div 
                     custom={5}
                     variants={linkVariants}
                     className="mt-12 pt-12 border-t border-white/10"
@@ -216,7 +218,7 @@ const Navbar: React.FC = () => {
                     >
                         Start Project
                     </a>
-                </motion.div>
+                </M.div>
              </div>
 
              {/* Footer Info */}
@@ -224,7 +226,7 @@ const Navbar: React.FC = () => {
                  <div>Based in<br/>Bengaluru, IN</div>
                  <div className="text-right">System<br/><span className="text-green-500">Operational</span></div>
              </div>
-          </motion.div>
+          </M.div>
         )}
       </AnimatePresence>
     </>

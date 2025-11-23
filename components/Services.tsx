@@ -4,6 +4,9 @@ import { SERVICES } from '../constants';
 import { SectionId } from '../types';
 import { ArrowUpRight } from 'lucide-react';
 
+// Fix: Cast motion to any to avoid type errors with IntrinsicAttributes
+const M = motion as any;
+
 // --- Custom Animated Icons ---
 
 const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
@@ -14,7 +17,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
     case 'mcp': // Protocol / Database
       return (
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-          <motion.path
+          <M.path
             d="M12 3V21"
             stroke={strokeColor}
             strokeWidth="1.5"
@@ -23,7 +26,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
             animate={{ pathLength: 1, opacity: 0.2 }}
             transition={transition}
           />
-          <motion.rect
+          <M.rect
             x="4" y="6" width="16" height="4" rx="2"
             stroke={strokeColor}
             strokeWidth="1.5"
@@ -31,7 +34,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
           />
-          <motion.rect
+          <M.rect
             x="4" y="14" width="16" height="4" rx="2"
             stroke={strokeColor}
             strokeWidth="1.5"
@@ -39,7 +42,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
             animate={{ opacity: 1 }}
             transition={{ duration: 2, delay: 1, repeat: Infinity, repeatType: "reverse" }}
           />
-          <motion.path
+          <M.path
              d="M7 10V14 M17 10V14"
              stroke={strokeColor}
              strokeWidth="1.5"
@@ -52,14 +55,14 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
     case 'ai-agents': // Orbit / Bot
       return (
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-           <motion.circle
+           <M.circle
              cx="12" cy="12" r="3"
              stroke={strokeColor}
              strokeWidth="1.5"
              animate={{ scale: [1, 1.2, 1] }}
              transition={{ duration: 2, repeat: Infinity }}
            />
-           <motion.ellipse
+           <M.ellipse
              cx="12" cy="12" rx="8" ry="3"
              stroke={strokeColor}
              strokeWidth="1"
@@ -67,7 +70,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
              animate={{ rotate: 360 }}
              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
            />
-           <motion.ellipse
+           <M.ellipse
              cx="12" cy="12" rx="8" ry="3"
              stroke={strokeColor}
              strokeWidth="1"
@@ -81,7 +84,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
       return (
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
            <path d="M4 4H20V20H4V4Z" stroke={strokeColor} strokeWidth="1.5" strokeOpacity="0.3" />
-           <motion.path 
+           <M.path 
              d="M8 8H16 M8 12H16 M8 16H12" 
              stroke={strokeColor} 
              strokeWidth="1.5" 
@@ -90,7 +93,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
              animate={{ pathLength: 1 }}
              transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}
            />
-           <motion.rect
+           <M.rect
              x="2" y="0" width="20" height="2"
              fill={strokeColor}
              initial={{ y: 4, opacity: 0 }}
@@ -102,7 +105,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
     case 'cloud-dev': // Cloud / Particles
       return (
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-           <motion.path
+           <M.path
              d="M17.5 19C19.9853 19 22 16.9853 22 14.5C22 12.132 20.177 10.244 17.819 10.021C17.485 6.643 14.654 4 11.5 4C8.455 4 5.727 6.402 5.187 9.61C2.793 10.028 1 12.093 1 14.5C1 16.985 3.015 19 5.5 19H17.5Z"
              stroke={strokeColor}
              strokeWidth="1.5"
@@ -112,15 +115,15 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
              animate={{ strokeDashoffset: 8 }}
              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
            />
-           <motion.circle cx="8" cy="14" r="1" fill={strokeColor} animate={{ y: [0, -2, 0] }} transition={{ duration: 1.5, repeat: Infinity }} />
-           <motion.circle cx="12" cy="12" r="1" fill={strokeColor} animate={{ y: [0, -3, 0] }} transition={{ duration: 2, repeat: Infinity }} />
-           <motion.circle cx="16" cy="14" r="1" fill={strokeColor} animate={{ y: [0, -2, 0] }} transition={{ duration: 1.5, delay: 0.5, repeat: Infinity }} />
+           <M.circle cx="8" cy="14" r="1" fill={strokeColor} animate={{ y: [0, -2, 0] }} transition={{ duration: 1.5, repeat: Infinity }} />
+           <M.circle cx="12" cy="12" r="1" fill={strokeColor} animate={{ y: [0, -3, 0] }} transition={{ duration: 2, repeat: Infinity }} />
+           <M.circle cx="16" cy="14" r="1" fill={strokeColor} animate={{ y: [0, -2, 0] }} transition={{ duration: 1.5, delay: 0.5, repeat: Infinity }} />
         </svg>
       );
     case 'full-stack': // Layers
       return (
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-           <motion.path
+           <M.path
              d="M12 2L2 7L12 12L22 7L12 2Z"
              stroke={strokeColor}
              strokeWidth="1.5"
@@ -129,7 +132,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
              animate={{ y: [0, -2, 0] }}
              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
            />
-           <motion.path
+           <M.path
              d="M2 17L12 22L22 17"
              stroke={strokeColor}
              strokeWidth="1.5"
@@ -137,7 +140,7 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
              strokeLinejoin="round"
              initial={{ opacity: 0.5 }}
            />
-           <motion.path
+           <M.path
              d="M2 12L12 17L22 12"
              stroke={strokeColor}
              strokeWidth="1.5"
@@ -151,16 +154,16 @@ const ServiceIcon: React.FC<{ id: string }> = ({ id }) => {
     case 'integration': // Network
       return (
          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <motion.circle cx="12" cy="12" r="2" stroke={strokeColor} strokeWidth="1.5" />
-            <motion.circle cx="6" cy="18" r="2" stroke={strokeColor} strokeWidth="1.5" />
-            <motion.circle cx="18" cy="6" r="2" stroke={strokeColor} strokeWidth="1.5" />
-            <motion.circle cx="18" cy="18" r="2" stroke={strokeColor} strokeWidth="1.5" />
-            <motion.circle cx="6" cy="6" r="2" stroke={strokeColor} strokeWidth="1.5" />
+            <M.circle cx="12" cy="12" r="2" stroke={strokeColor} strokeWidth="1.5" />
+            <M.circle cx="6" cy="18" r="2" stroke={strokeColor} strokeWidth="1.5" />
+            <M.circle cx="18" cy="6" r="2" stroke={strokeColor} strokeWidth="1.5" />
+            <M.circle cx="18" cy="18" r="2" stroke={strokeColor} strokeWidth="1.5" />
+            <M.circle cx="6" cy="6" r="2" stroke={strokeColor} strokeWidth="1.5" />
             
-            <motion.path d="M12 12L6 6" stroke={strokeColor} strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, repeat: Infinity }} />
-            <motion.path d="M12 12L18 18" stroke={strokeColor} strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 0.5, repeat: Infinity }} />
-            <motion.path d="M12 12L6 18" stroke={strokeColor} strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 0.2, repeat: Infinity }} />
-            <motion.path d="M12 12L18 6" stroke={strokeColor} strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 0.7, repeat: Infinity }} />
+            <M.path d="M12 12L6 6" stroke={strokeColor} strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, repeat: Infinity }} />
+            <M.path d="M12 12L18 18" stroke={strokeColor} strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 0.5, repeat: Infinity }} />
+            <M.path d="M12 12L6 18" stroke={strokeColor} strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 0.2, repeat: Infinity }} />
+            <M.path d="M12 12L18 6" stroke={strokeColor} strokeWidth="1" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.5, delay: 0.7, repeat: Infinity }} />
          </svg>
       );
     default:
@@ -200,7 +203,7 @@ const Services: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
           {SERVICES.map((service, index) => (
-            <motion.div
+            <M.div
               key={service.id}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -252,7 +255,7 @@ const Services: React.FC = () => {
                   </div>
                   <ArrowUpRight className="w-5 h-5 text-brand-muted group-hover:text-white group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform duration-300" />
               </div>
-            </motion.div>
+            </M.div>
           ))}
         </div>
       </div>

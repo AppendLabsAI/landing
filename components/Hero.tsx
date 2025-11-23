@@ -2,6 +2,9 @@ import React, { useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowDown } from 'lucide-react';
 
+// Fix: Cast motion to any to avoid type errors with IntrinsicAttributes
+const M = motion as any;
+
 const Hero: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -192,7 +195,7 @@ const Hero: React.FC = () => {
       <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col items-center justify-center pointer-events-none h-full pt-28 md:pt-0">
           
           {/* Badge */}
-          <motion.div 
+          <M.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -207,7 +210,7 @@ const Hero: React.FC = () => {
                    System Operational
                 </span>
              </div>
-          </motion.div>
+          </M.div>
 
           {/* Typography - Explicitly set to 9vw for mobile to prevent overflow */}
           <div className="text-center w-full mix-blend-difference">
@@ -218,7 +221,7 @@ const Hero: React.FC = () => {
           </div>
           
           {/* Subtext */}
-          <motion.p 
+          <M.p 
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
              transition={{ duration: 1, delay: 0.5 }}
@@ -226,11 +229,11 @@ const Hero: React.FC = () => {
           >
              Architecting the neural pathways of modern enterprise.
              <span className="block mt-2 text-white/90">Deterministic Agents. Air-Gapped RAG.</span>
-          </motion.p>
+          </M.p>
       </div>
 
       {/* Scroll Indicator */}
-      <motion.div 
+      <M.div 
         className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/20"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -239,7 +242,7 @@ const Hero: React.FC = () => {
             <span className="font-mono text-[9px] uppercase tracking-widest">Scroll</span>
             <ArrowDown size={14} />
          </div>
-      </motion.div>
+      </M.div>
     </section>
   );
 };

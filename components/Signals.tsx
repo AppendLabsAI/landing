@@ -3,6 +3,9 @@ import { motion } from 'framer-motion';
 import { TESTIMONIALS } from '../constants';
 import { Quote } from 'lucide-react';
 
+// Fix: Cast motion to any to avoid type errors with IntrinsicAttributes
+const M = motion as any;
+
 const Signals: React.FC = () => {
   return (
     <section className="py-20 md:py-32 bg-black border-t border-brand-border">
@@ -17,7 +20,7 @@ const Signals: React.FC = () => {
                   {/* Frequency Visualizer */}
                   <div className="flex gap-0.5 items-end h-3">
                       {[1,2,3,4,5].map(i => (
-                          <motion.div 
+                          <M.div 
                              key={i} 
                              className="w-0.5 bg-green-500"
                              animate={{ height: ["20%", "100%", "20%"] }}
@@ -38,7 +41,7 @@ const Signals: React.FC = () => {
         {/* Desktop: Grid | Mobile: Horizontal Scroll Snap */}
         <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-3 gap-4 md:gap-px md:bg-brand-border md:border border-brand-border pb-8 md:pb-0 no-scrollbar">
           {TESTIMONIALS.map((t, index) => (
-            <motion.div 
+            <M.div 
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -64,7 +67,7 @@ const Signals: React.FC = () => {
                     </div>
                  </div>
               </div>
-            </motion.div>
+            </M.div>
           ))}
         </div>
 

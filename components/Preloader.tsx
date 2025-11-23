@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// Fix: Cast motion to any to avoid type errors with IntrinsicAttributes
+const M = motion as any;
+
 const WORDS = [
   "INITIALIZING_CORE",
   "LOADING_ASSETS",
@@ -48,7 +51,7 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
   }, [onComplete]);
 
   return (
-    <motion.div
+    <M.div
       className="fixed inset-0 z-[100] bg-black flex items-center justify-center overflow-hidden"
       initial={{ y: 0 }}
       exit={{ y: "-100%", transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } }}
@@ -61,7 +64,7 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
         
         {/* System Text */}
         <div className="h-6 overflow-hidden">
-            <motion.div 
+            <M.div 
                key={textIndex}
                initial={{ y: 20, opacity: 0 }}
                animate={{ y: 0, opacity: 1 }}
@@ -69,12 +72,12 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
                className="font-mono text-xs text-brand-muted uppercase tracking-[0.2em]"
             >
                {WORDS[textIndex]}
-            </motion.div>
+            </M.div>
         </div>
 
         {/* Progress Bar */}
         <div className="absolute bottom-[-40px] w-48 h-[2px] bg-white/10 rounded-full overflow-hidden">
-           <motion.div 
+           <M.div 
               className="h-full bg-white" 
               initial={{ width: "0%" }}
               animate={{ width: "100%" }}
@@ -86,7 +89,7 @@ const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       {/* Background Noise/Grid */}
       <div className="absolute inset-0 opacity-20 pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:4rem_4rem] opacity-20 pointer-events-none"></div>
-    </motion.div>
+    </M.div>
   );
 };
 

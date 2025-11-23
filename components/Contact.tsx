@@ -3,6 +3,9 @@ import { Terminal, CheckCircle2, AlertCircle } from 'lucide-react';
 import { SectionId } from '../types';
 import { motion, AnimatePresence, useMotionValue, useSpring } from 'framer-motion';
 
+// Fix: Cast motion to any to avoid type errors with IntrinsicAttributes
+const M = motion as any;
+
 const InteractiveGlobe: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
     const isDragging = useRef(false);
@@ -70,7 +73,7 @@ const InteractiveGlobe: React.FC = () => {
             onTouchEnd={handleTouchEnd}
         >
             <div className="absolute top-1/2 left-1/2 w-0 h-0 perspective-[1000px]">
-                <motion.div
+                <M.div
                     style={{ 
                         rotateX: springRotateX, 
                         rotateY: springRotateY,
@@ -97,7 +100,7 @@ const InteractiveGlobe: React.FC = () => {
 
                      {/* Core Glow */}
                      <div className="absolute inset-[30%] bg-white/5 blur-3xl rounded-full"></div>
-                </motion.div>
+                </M.div>
             </div>
             {/* Fade Overlay */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,black_100%)] pointer-events-none"></div>
@@ -218,7 +221,7 @@ const Contact: React.FC = () => {
 
             {/* Form Side - Terminal Window */}
             <div className="lg:col-span-3 pointer-events-auto">
-                <motion.div 
+                <M.div 
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -240,7 +243,7 @@ const Contact: React.FC = () => {
                     <div className="p-6 md:p-8 min-h-[440px] flex flex-col">
                         <AnimatePresence mode="wait">
                             {formState === 'input' && (
-                                <motion.form 
+                                <M.form 
                                     key="form"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
@@ -293,11 +296,11 @@ const Contact: React.FC = () => {
                                             <span className="w-2 h-4 bg-green-400 animate-pulse ml-1 inline-block align-middle"></span>
                                         </button>
                                     </div>
-                                </motion.form>
+                                </M.form>
                             )}
 
                             {formState === 'processing' && (
-                                <motion.div 
+                                <M.div 
                                     key="processing"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
@@ -305,34 +308,34 @@ const Contact: React.FC = () => {
                                     className="flex-1 font-mono text-xs md:text-sm space-y-2 text-white/80"
                                 >
                                     {logs.map((log, i) => (
-                                        <motion.div 
+                                        <M.div 
                                             key={i} 
                                             initial={{ opacity: 0, x: -10 }} 
                                             animate={{ opacity: 1, x: 0 }}
                                             className={log.includes('successful') ? 'text-green-400 font-bold' : ''}
                                         >
                                             {log}
-                                        </motion.div>
+                                        </M.div>
                                     ))}
                                     <div className="w-2 h-4 bg-white/50 animate-pulse inline-block align-middle"></div>
-                                </motion.div>
+                                </M.div>
                             )}
 
                             {formState === 'success' && (
-                                <motion.div 
+                                <M.div 
                                     key="success"
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     className="flex-1 flex flex-col items-center justify-center text-center"
                                 >
-                                    <motion.div 
+                                    <M.div 
                                         initial={{ scale: 0 }} 
                                         animate={{ scale: 1 }} 
                                         transition={{ type: "spring", stiffness: 200, damping: 20 }}
                                         className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center mb-6"
                                     >
                                         <CheckCircle2 className="w-8 h-8 text-green-500" />
-                                    </motion.div>
+                                    </M.div>
                                     <h3 className="text-xl font-bold text-white mb-2 font-heading">Signal Received</h3>
                                     <p className="text-white/50 text-xs mb-8 max-w-xs">
                                         Your transmission has been logged in our secure queue. Ticket #{Math.floor(Math.random() * 9000) + 1000} assigned.
@@ -347,11 +350,11 @@ const Contact: React.FC = () => {
                                     >
                                         reset_terminal
                                     </button>
-                                </motion.div>
+                                </M.div>
                             )}
                         </AnimatePresence>
                     </div>
-                </motion.div>
+                </M.div>
             </div>
         </div>
       </div>

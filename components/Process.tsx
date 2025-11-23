@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionId } from '../types';
 
+// Fix: Cast motion to any to avoid type errors with IntrinsicAttributes
+const M = motion as any;
+
 const steps = [
   {
     id: '01',
@@ -53,31 +56,31 @@ const AuditDiagram = () => (
 
     <g transform="translate(200 200)">
         {/* Complex Rotating Rings */}
-        <motion.circle r="140" stroke="rgba(255,255,255,0.1)" strokeWidth="1" fill="none" strokeDasharray="2 4" animate={{ rotate: 360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} />
-        <motion.circle r="120" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" strokeDasharray="10 10" animate={{ rotate: -360 }} transition={{ duration: 45, repeat: Infinity, ease: "linear" }} />
-        <motion.circle r="80" stroke="rgba(255,255,255,0.2)" strokeWidth="2" fill="none" strokeDasharray="20 20" animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
+        <M.circle r="140" stroke="rgba(255,255,255,0.1)" strokeWidth="1" fill="none" strokeDasharray="2 4" animate={{ rotate: 360 }} transition={{ duration: 60, repeat: Infinity, ease: "linear" }} />
+        <M.circle r="120" stroke="rgba(255,255,255,0.15)" strokeWidth="1" fill="none" strokeDasharray="10 10" animate={{ rotate: -360 }} transition={{ duration: 45, repeat: Infinity, ease: "linear" }} />
+        <M.circle r="80" stroke="rgba(255,255,255,0.2)" strokeWidth="2" fill="none" strokeDasharray="20 20" animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
         
         {/* Radar Scanner */}
-        <motion.g animate={{ rotate: 360 }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }}>
+        <M.g animate={{ rotate: 360 }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }}>
             <line x1="0" y1="0" x2="0" y2="-140" stroke="white" strokeWidth="2" style={{ filter: 'url(#glow-audit)' }} />
             <path d="M 0 0 L -20 -140 A 140 140 0 0 1 0 -140 Z" fill="white" opacity="0.05" />
-        </motion.g>
+        </M.g>
 
         {/* Anomalies / Targets */}
         {[0, 120, 240].map((deg, i) => (
-            <motion.g key={i} transform={`rotate(${deg})`}>
-                <motion.g animate={{ x: [0, 20, 0] }} transition={{ duration: 4, repeat: Infinity, delay: i }}>
-                    <motion.circle cx="0" cy="-100" r="3" fill="#ef4444" animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1, repeat: Infinity }} />
-                    <motion.circle cx="0" cy="-100" r="15" stroke="#ef4444" strokeWidth="1" fill="none" initial={{ scale: 0, opacity: 1 }} animate={{ scale: 1.5, opacity: 0 }} transition={{ duration: 1.5, repeat: Infinity }} />
+            <M.g key={i} transform={`rotate(${deg})`}>
+                <M.g animate={{ x: [0, 20, 0] }} transition={{ duration: 4, repeat: Infinity, delay: i }}>
+                    <M.circle cx="0" cy="-100" r="3" fill="#ef4444" animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1, repeat: Infinity }} />
+                    <M.circle cx="0" cy="-100" r="15" stroke="#ef4444" strokeWidth="1" fill="none" initial={{ scale: 0, opacity: 1 }} animate={{ scale: 1.5, opacity: 0 }} transition={{ duration: 1.5, repeat: Infinity }} />
                     <line x1="0" y1="-90" x2="0" y2="-110" stroke="#ef4444" strokeWidth="0.5" opacity="0.5" />
                     <line x1="-10" y1="-100" x2="10" y2="-100" stroke="#ef4444" strokeWidth="0.5" opacity="0.5" />
-                </motion.g>
-            </motion.g>
+                </M.g>
+            </M.g>
         ))}
     </g>
 
     {/* Text Interface */}
-    <motion.text x="20" y="380" className="text-[10px] font-mono fill-red-400 font-bold" animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 0.5, repeat: Infinity }}>TARGET_LOCKED // ANOMALY_DETECTED</motion.text>
+    <M.text x="20" y="380" className="text-[10px] font-mono fill-red-400 font-bold" animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 0.5, repeat: Infinity }}>TARGET_LOCKED // ANOMALY_DETECTED</M.text>
     <text x="320" y="380" className="text-[10px] font-mono fill-white opacity-50">SCAN_RATE: 240Hz</text>
   </svg>
 );
@@ -93,15 +96,15 @@ const ProtocolDiagram = () => (
       
       <g transform="translate(200 200)">
           {/* Central Neural Core */}
-          <motion.circle r="30" stroke="white" strokeWidth="2" fill="none" animate={{ r: [30, 35, 30] }} transition={{ duration: 2, repeat: Infinity }} style={{ filter: 'url(#glow-proto)' }} />
-          <motion.circle r="10" fill="white" animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1, repeat: Infinity }} />
+          <M.circle r="30" stroke="white" strokeWidth="2" fill="none" animate={{ r: [30, 35, 30] }} transition={{ duration: 2, repeat: Infinity }} style={{ filter: 'url(#glow-proto)' }} />
+          <M.circle r="10" fill="white" animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1, repeat: Infinity }} />
           
           {/* Orbiting Satellite Nodes */}
           {[0, 60, 120, 180, 240, 300].map((deg, i) => (
-              <motion.g key={i} animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: i * -2 }}>
+              <M.g key={i} animate={{ rotate: 360 }} transition={{ duration: 20, repeat: Infinity, ease: "linear", delay: i * -2 }}>
                  <g transform={`rotate(${deg}) translate(0 -120)`}>
                     <circle r="6" fill="#111" stroke="white" strokeWidth="1.5" />
-                    <motion.path 
+                    <M.path 
                        d="M 0 0 L 0 90" 
                        stroke="white" 
                        strokeWidth="1" 
@@ -109,7 +112,7 @@ const ProtocolDiagram = () => (
                        strokeDasharray="4 4"
                     />
                     {/* Traveling Data Packets */}
-                    <motion.circle 
+                    <M.circle 
                        r="3" 
                        fill="white" 
                        initial={{ cy: 0 }}
@@ -118,11 +121,11 @@ const ProtocolDiagram = () => (
                        style={{ filter: 'url(#glow-proto)' }}
                     />
                  </g>
-              </motion.g>
+              </M.g>
           ))}
 
           {/* Connection Mesh */}
-          <motion.path 
+          <M.path 
             d="M -120 -80 L 120 -80 L 120 80 L -120 80 Z" 
             fill="none" stroke="white" strokeWidth="0.5" strokeOpacity="0.1" 
             animate={{ rotate: -360, scale: [1, 1.1, 1] }} 
@@ -131,7 +134,7 @@ const ProtocolDiagram = () => (
       </g>
       
       <text x="20" y="380" className="text-[10px] font-mono fill-white opacity-80">HANDSHAKE_ESTABLISHED</text>
-      <motion.rect x="180" y="370" width="40" height="2" fill="white" animate={{ width: [40, 60, 40], x: [180, 170, 180] }} transition={{ duration: 1, repeat: Infinity }} />
+      <M.rect x="180" y="370" width="40" height="2" fill="white" animate={{ width: [40, 60, 40], x: [180, 170, 180] }} transition={{ duration: 1, repeat: Infinity }} />
    </svg>
 );
 
@@ -147,7 +150,7 @@ const DevelopmentDiagram = () => (
 
       {/* Falling Code Background */}
       {[20, 60, 100, 140, 180, 220, 260, 300, 340, 380].map((x, i) => (
-         <motion.rect 
+         <M.rect 
             key={i}
             x={x} y="-100" width="1" height="150" 
             fill="url(#code-fade)"
@@ -159,22 +162,22 @@ const DevelopmentDiagram = () => (
       {/* Isometric Assembly Center */}
       <g transform="translate(200 200)">
          {/* Base */}
-         <motion.path d="M0 60 L-50 30 L0 0 L50 30 Z" fill="rgba(255,255,255,0.1)" stroke="white" strokeWidth="1" />
-         <motion.path d="M-50 30 L-50 90 L0 120 L0 60 Z" fill="rgba(255,255,255,0.05)" stroke="white" strokeWidth="1" />
-         <motion.path d="M0 120 L50 90 L50 30 L0 60 Z" fill="rgba(255,255,255,0.08)" stroke="white" strokeWidth="1" />
+         <M.path d="M0 60 L-50 30 L0 0 L50 30 Z" fill="rgba(255,255,255,0.1)" stroke="white" strokeWidth="1" />
+         <M.path d="M-50 30 L-50 90 L0 120 L0 60 Z" fill="rgba(255,255,255,0.05)" stroke="white" strokeWidth="1" />
+         <M.path d="M0 120 L50 90 L50 30 L0 60 Z" fill="rgba(255,255,255,0.08)" stroke="white" strokeWidth="1" />
 
          {/* Floating Top Layer */}
-         <motion.g animate={{ y: [0, -40, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
+         <M.g animate={{ y: [0, -40, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
              <path d="M0 60 L-50 30 L0 0 L50 30 Z" fill="rgba(255,255,255,0.2)" stroke="white" strokeWidth="1" />
              <path d="M-50 30 L-50 90 L0 120 L0 60 Z" fill="rgba(255,255,255,0.1)" stroke="white" strokeWidth="1" />
              <path d="M0 120 L50 90 L50 30 L0 60 Z" fill="rgba(255,255,255,0.15)" stroke="white" strokeWidth="1" />
-         </motion.g>
+         </M.g>
 
          {/* Energy Core */}
-         <motion.circle cy="60" r="5" fill="white" animate={{ opacity: [0.5, 1, 0.5], scale: [1, 1.5, 1] }} transition={{ duration: 1, repeat: Infinity }} />
+         <M.circle cy="60" r="5" fill="white" animate={{ opacity: [0.5, 1, 0.5], scale: [1, 1.5, 1] }} transition={{ duration: 1, repeat: Infinity }} />
       </g>
       
-      <motion.text x="20" y="380" className="text-[10px] font-mono fill-white" animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }}>COMPILING_ASSETS...</motion.text>
+      <M.text x="20" y="380" className="text-[10px] font-mono fill-white" animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }}>COMPILING_ASSETS...</M.text>
       <text x="300" y="380" className="text-[10px] font-mono fill-green-400">BUILD: SUCCESS</text>
    </svg>
 );
@@ -183,19 +186,19 @@ const DeploymentDiagram = () => (
    <svg viewBox="0 0 400 400" className="w-full h-full text-white">
       {/* Globe Grid */}
       <g transform="translate(200 200)">
-          <motion.circle r="120" stroke="white" strokeWidth="0.5" fill="none" opacity="0.2" />
-          <motion.ellipse rx="120" ry="40" stroke="white" strokeWidth="0.5" fill="none" opacity="0.2" animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
-          <motion.ellipse rx="40" ry="120" stroke="white" strokeWidth="0.5" fill="none" opacity="0.2" animate={{ rotate: -360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
+          <M.circle r="120" stroke="white" strokeWidth="0.5" fill="none" opacity="0.2" />
+          <M.ellipse rx="120" ry="40" stroke="white" strokeWidth="0.5" fill="none" opacity="0.2" animate={{ rotate: 360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
+          <M.ellipse rx="40" ry="120" stroke="white" strokeWidth="0.5" fill="none" opacity="0.2" animate={{ rotate: -360 }} transition={{ duration: 30, repeat: Infinity, ease: "linear" }} />
           
           {/* Signal Waves */}
-          <motion.circle r="10" stroke="white" strokeWidth="2" fill="none" initial={{ opacity: 1, scale: 0 }} animate={{ opacity: 0, scale: 12 }} transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }} />
-          <motion.circle r="10" stroke="white" strokeWidth="1" fill="none" initial={{ opacity: 1, scale: 0 }} animate={{ opacity: 0, scale: 12 }} transition={{ duration: 3, repeat: Infinity, ease: "easeOut", delay: 1 }} />
+          <M.circle r="10" stroke="white" strokeWidth="2" fill="none" initial={{ opacity: 1, scale: 0 }} animate={{ opacity: 0, scale: 12 }} transition={{ duration: 3, repeat: Infinity, ease: "easeOut" }} />
+          <M.circle r="10" stroke="white" strokeWidth="1" fill="none" initial={{ opacity: 1, scale: 0 }} animate={{ opacity: 0, scale: 12 }} transition={{ duration: 3, repeat: Infinity, ease: "easeOut", delay: 1 }} />
       </g>
 
       {/* Connecting Beams to Perimeter */}
       {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => (
           <g key={i} transform={`translate(200 200) rotate(${deg})`}>
-              <motion.line 
+              <M.line 
                 x1="0" y1="0" x2="160" y2="0" 
                 stroke="white" strokeWidth="1" 
                 strokeDasharray="4 2"
@@ -203,7 +206,7 @@ const DeploymentDiagram = () => (
                 animate={{ opacity: [0.1, 1, 0.1] }}
                 transition={{ duration: 2, repeat: Infinity, delay: i * 0.2 }}
               />
-              <motion.circle cx="160" cy="0" r="4" fill="#4ade80" animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }} />
+              <M.circle cx="160" cy="0" r="4" fill="#4ade80" animate={{ scale: [1, 1.5, 1] }} transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }} />
           </g>
       ))}
 
@@ -244,7 +247,7 @@ const Process: React.FC = () => {
            {/* Left Column - Steps */}
            <div className="space-y-[10vh] md:space-y-[40vh]">
               {steps.map((step, index) => (
-                 <motion.div 
+                 <M.div 
                     key={index}
                     initial={{ opacity: 0.2 }}
                     whileInView={{ opacity: 1 }}
@@ -275,7 +278,7 @@ const Process: React.FC = () => {
                            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,18,18,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-20 pointer-events-none bg-[size:100%_4px,6px_100%] opacity-30"></div>
                        </div>
                     </div>
-                 </motion.div>
+                 </M.div>
               ))}
            </div>
 
@@ -294,24 +297,24 @@ const Process: React.FC = () => {
                  <div className="w-full h-full p-12">
                     <AnimatePresence mode="wait">
                        {activeStep === 0 && (
-                          <motion.div key="audit" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="w-full h-full">
+                          <M.div key="audit" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="w-full h-full">
                              <AuditDiagram />
-                          </motion.div>
+                          </M.div>
                        )}
                        {activeStep === 1 && (
-                          <motion.div key="protocol" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="w-full h-full">
+                          <M.div key="protocol" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="w-full h-full">
                              <ProtocolDiagram />
-                          </motion.div>
+                          </M.div>
                        )}
                        {activeStep === 2 && (
-                          <motion.div key="development" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="w-full h-full">
+                          <M.div key="development" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="w-full h-full">
                              <DevelopmentDiagram />
-                          </motion.div>
+                          </M.div>
                        )}
                        {activeStep === 3 && (
-                          <motion.div key="deployment" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="w-full h-full">
+                          <M.div key="deployment" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} className="w-full h-full">
                              <DeploymentDiagram />
-                          </motion.div>
+                          </M.div>
                        )}
                     </AnimatePresence>
                  </div>
