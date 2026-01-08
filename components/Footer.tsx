@@ -60,6 +60,24 @@ const Footer: React.FC = () => {
             </h1>
         </div>
         
+        {/* Legal Links */}
+        <div className="pt-6 border-t border-white/10">
+            <div className="flex flex-wrap gap-x-6 gap-y-2 mb-6">
+                <a 
+                    href="/terms" 
+                    className="font-mono text-[10px] uppercase tracking-widest text-brand-muted hover:text-white transition-colors"
+                >
+                    Terms of Service
+                </a>
+                <a 
+                    href="/privacy" 
+                    className="font-mono text-[10px] uppercase tracking-widest text-brand-muted hover:text-white transition-colors"
+                >
+                    Privacy Policy
+                </a>
+            </div>
+        </div>
+
         {/* Meta Data */}
         <div className="flex flex-col md:flex-row md:justify-between md:items-end pt-6 border-t border-white/10 opacity-60 gap-4">
             <div className="font-mono text-[10px] uppercase tracking-widest text-brand-muted">

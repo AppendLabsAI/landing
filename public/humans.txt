@@ -7,16 +7,7 @@
     Site: https://appendlabs.com
     Location: Bengaluru, Karnataka, India
 
-# TECHNOLOGY COLOPHON
-
-    Frontend: React, TypeScript, Vite, Tailwind CSS, Framer Motion
-    Backend: Node.js
-    Deployment: Modern web hosting
-    Standards: HTML5, CSS3, JavaScript ES6+
-    Components: Radix UI, Lucide Icons
-    Fonts: Inter, Manrope, Space Grotesk
-
 # THANKS
 
-    Thanks to all contributors and the open-source community
+    Built by AppendLabs for innovative AI infrastructure solutions
 
