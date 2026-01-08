@@ -82,6 +82,10 @@ landing/
 │   ├── PrivacyPolicy.tsx
 │   ├── SEO.tsx         # SEO component
 │   └── ...
+├── docs/               # Documentation and guides
+│   ├── guides/         # Feature guides
+│   │   └── vercel-web-analytics/  # Vercel Web Analytics setup guide
+│   └── README.md       # Documentation index
 ├── lib/                # Utility functions
 │   ├── chatbot-api.ts  # OpenAI API integration
 │   ├── chatbot-knowledge.ts  # Chatbot knowledge base
@@ -96,6 +100,12 @@ landing/
 ├── index.tsx           # Entry point
 └── vite.config.ts      # Vite configuration
 ```
+
+## Documentation
+
+For detailed guides and documentation, see the [docs directory](./docs/README.md):
+
+- **[Vercel Web Analytics Guide](./docs/guides/vercel-web-analytics/getting-started.md)** - Complete setup guide for integrating Vercel Web Analytics with multiple frameworks and platforms
 
 ## Deployment
 
