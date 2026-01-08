@@ -1,4 +1,9 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "vite",
   "rewrites": [
     {
       "source": "/sitemap.xml",
@@ -21,7 +26,11 @@
       "destination": "/humans.txt"
     },
     {
-      "source": "/(.*)",
+      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot))",
+      "destination": "/$1"
+    },
+    {
+      "source": "/((?!sitemap\\.xml|robots\\.txt|favicon\\.svg|manifest\\.json|humans\\.txt).*)",
       "destination": "/index.html"
     }
   ],
