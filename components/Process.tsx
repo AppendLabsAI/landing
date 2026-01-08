@@ -231,48 +231,57 @@ const Process: React.FC = () => {
   }
 
   return (
-    <section id={SectionId.PROCESS} className="bg-black relative pt-32 pb-48 border-t border-brand-border">
+    <section id={SectionId.PROCESS} className="bg-black relative py-16 md:py-24 lg:py-32 xl:py-40 border-t border-brand-border">
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="text-center mb-20 md:mb-32">
-          <h2 className="text-white font-mono text-xs tracking-[0.2em] uppercase mb-4">
+        <div className="text-left md:text-center mb-12 md:mb-16 lg:mb-20 xl:mb-24">
+          <h2 className="text-white font-mono text-xs tracking-[0.2em] uppercase mb-3 md:mb-4">
             <span className="text-brand-muted">//</span> Execution
           </h2>
-          <h3 className="font-heading font-bold text-5xl md:text-7xl text-white tracking-tighter">
+          <h3 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white tracking-tighter">
             THE PROTOCOL
           </h3>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-20">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16 xl:gap-20">
            {/* Left Column - Steps */}
-           <div className="space-y-[10vh] md:space-y-[40vh]">
+           <div className="space-y-12 md:space-y-20 lg:space-y-[30vh] xl:space-y-[40vh]">
               {steps.map((step, index) => (
                  <M.div 
                     key={index}
                     initial={{ opacity: 0.2 }}
                     whileInView={{ opacity: 1 }}
-                    viewport={{ margin: "-20% 0px -20% 0px" }}
+                    viewport={{ margin: "-10% 0px -60% 0px" }}
                     onViewportEnter={() => setActiveStep(index)}
-                    className="flex flex-col justify-center min-h-[50vh] md:min-h-[40vh]"
+                    className="flex flex-col justify-start min-h-[60vh] sm:min-h-[65vh] md:min-h-[50vh] scroll-mt-24"
+                    id={`step-${index}`}
                  >
-                    <div className="flex items-baseline gap-4 mb-6">
-                       <span className="font-heading font-black text-4xl md:text-6xl text-brand-surfaceHighlight">
+                    <div className="flex items-baseline gap-3 md:gap-4 mb-3 md:mb-4">
+                       <span className="font-heading font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-brand-surfaceHighlight">
                           {step.id}
                        </span>
-                       <h4 className="font-heading font-bold text-2xl md:text-3xl text-white">{step.title}</h4>
+                       <h4 className="font-heading font-bold text-xl sm:text-2xl md:text-2xl lg:text-3xl text-white">{step.title}</h4>
                     </div>
-                    <div className="pl-0 md:pl-20 md:border-l border-brand-surfaceHighlight">
-                       <p className="text-brand-muted text-base md:text-lg font-sans font-light leading-relaxed max-w-md">
+                    <div className="pl-0 md:pl-12 lg:pl-20 md:border-l border-brand-surfaceHighlight">
+                       <p className="text-brand-muted text-sm sm:text-base md:text-lg font-sans font-light leading-relaxed max-w-md mb-4 md:mb-0">
                           {step.description}
                        </p>
-                       <div className="mt-6 flex items-center gap-2 mb-8 md:mb-0">
+                       <div className="mt-4 md:mt-6 flex items-center gap-2 mb-4 md:mb-0">
                           <div className="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></div>
-                          <span className="font-mono text-xs uppercase tracking-widest text-white">{step.tech}</span>
+                          <span className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-white">{step.tech}</span>
                        </div>
                        
                        {/* Mobile Diagram Display (Inline) */}
-                       <div className="block lg:hidden w-full h-[300px] bg-brand-surface border border-brand-border rounded-sm mt-8 overflow-hidden relative">
-                           <div className="absolute inset-0 p-4">
+                       <div className="block lg:hidden w-full h-[280px] sm:h-[320px] bg-brand-surface border border-brand-border rounded-sm mt-6 overflow-hidden relative">
+                           <div className="absolute top-2 left-2 font-mono text-[8px] text-brand-muted uppercase tracking-widest z-10">
+                              SYS_VISUALIZER_V1.0
+                           </div>
+                           <div className="absolute top-2 right-2 flex gap-1 z-10">
+                              <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div>
+                              <div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div>
+                              <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div>
+                           </div>
+                           <div className="absolute inset-0 p-3 sm:p-4">
                                 {getDiagram(index)}
                            </div>
                            <div className="absolute inset-0 bg-[linear-gradient(rgba(18,18,18,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-20 pointer-events-none bg-[size:100%_4px,6px_100%] opacity-30"></div>
@@ -284,7 +293,7 @@ const Process: React.FC = () => {
 
            {/* Right Column - Sticky Diagram (Desktop Only) */}
            <div className="hidden lg:block relative">
-              <div className="sticky top-32 h-[500px] w-full bg-brand-surface border border-brand-border rounded-sm overflow-hidden">
+              <div className="sticky top-24 h-[500px] w-full bg-brand-surface border border-brand-border rounded-sm overflow-hidden">
                  <div className="absolute top-4 left-4 font-mono text-[10px] text-brand-muted uppercase tracking-widest z-10">
                     SYS_VISUALIZER_V1.0
                  </div>

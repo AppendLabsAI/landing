@@ -8,12 +8,12 @@ const M = motion as any;
 
 const Signals: React.FC = () => {
   return (
-    <section className="py-20 md:py-32 bg-black border-t border-brand-border">
+    <section className="py-16 md:py-24 lg:py-32 xl:py-40 bg-black border-t border-brand-border">
       <div className="max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="flex flex-col md:flex-row items-end justify-between mb-12 md:mb-20">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
+        <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-10 md:mb-14 lg:mb-16 xl:mb-20">
+            <div className="text-left w-full md:w-auto">
+              <div className="flex items-center gap-3 mb-3 md:mb-4">
                   <h2 className="text-white font-mono text-xs tracking-[0.2em] uppercase">
                     <span className="text-brand-muted">//</span> Transmissions
                   </h2>
@@ -29,7 +29,7 @@ const Signals: React.FC = () => {
                       ))}
                   </div>
               </div>
-              <h3 className="font-heading font-bold text-4xl md:text-5xl text-white tracking-tighter">
+              <h3 className="font-heading font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tighter">
                 INTERCEPTED<br/>SIGNALS
               </h3>
             </div>

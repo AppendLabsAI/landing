@@ -9,6 +9,7 @@ const M = motion as any;
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Handle Scroll for Pill State
   useEffect(() => {
@@ -21,6 +22,25 @@ const Navbar: React.FC = () => {
     
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Check if modal is open (via body class)
+  useEffect(() => {
+    const checkModalState = () => {
+      setIsModalOpen(document.body.classList.contains('modal-open'));
+    };
+    
+    // Check initially
+    checkModalState();
+    
+    // Watch for class changes
+    const observer = new MutationObserver(checkModalState);
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+    
+    return () => observer.disconnect();
   }, []);
 
   // Lock Body Scroll when Menu is Open
@@ -79,8 +99,18 @@ const Navbar: React.FC = () => {
       {/* 
         NAVBAR CONTAINER 
         Z-Index 60 to sit above the full screen menu (Z-50)
+        Hidden when modal is open
       */}
-      <div className="fixed top-0 left-0 right-0 z-[60] flex justify-center pt-2 md:pt-4 pointer-events-none">
+      <M.div
+        initial={false}
+        animate={{
+          opacity: isModalOpen ? 0 : 1,
+          y: isModalOpen ? -20 : 0,
+          pointerEvents: isModalOpen ? 'none' : 'auto'
+        }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed top-0 left-0 right-0 z-[60] flex justify-center pt-2 md:pt-4 pointer-events-none"
+      >
         <M.nav
           layout // Enables smooth layout transitions
           initial={false}
@@ -164,7 +194,7 @@ const Navbar: React.FC = () => {
             </div>
           </button>
         </M.nav>
-      </div>
+      </M.div>
 
       {/* 
         FULL SCREEN MENU OVERLAY
@@ -183,42 +213,44 @@ const Navbar: React.FC = () => {
              <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none opacity-50"></div>
              
              {/* Content Container */}
-             <div className="flex-1 flex flex-col justify-center px-8 pb-20 pt-32 overflow-y-auto">
-                <div className="flex flex-col gap-6">
-                    {NAV_ITEMS.map((item, i) => (
-                    <M.div
-                        key={item.label}
-                        custom={i}
-                        variants={linkVariants}
-                    >
-                        <a
-                            href={item.href}
-                            onClick={() => setIsOpen(false)}
-                            className="group flex items-baseline gap-4"
+             <div className="flex-1 flex flex-col justify-between px-8 pb-8 pt-20 overflow-y-auto">
+                <div className="flex-1 flex flex-col justify-center">
+                    <div className="flex flex-col gap-6">
+                        {NAV_ITEMS.map((item, i) => (
+                        <M.div
+                            key={item.label}
+                            custom={i}
+                            variants={linkVariants}
                         >
-                            <span className="font-mono text-xs text-brand-muted group-hover:text-white transition-colors">0{i+1}</span>
-                            <span className="font-heading font-black text-5xl sm:text-6xl text-transparent stroke-text group-hover:text-white transition-colors duration-300"
-                                  style={{ WebkitTextStroke: '1px rgba(255,255,255,0.3)' }}>
-                                {item.label}
-                            </span>
+                            <a
+                                href={item.href}
+                                onClick={() => setIsOpen(false)}
+                                className="group flex items-baseline gap-4"
+                            >
+                                <span className="font-mono text-xs text-brand-muted group-hover:text-white transition-colors">0{i+1}</span>
+                                <span className="font-heading font-black text-5xl sm:text-6xl text-transparent stroke-text group-hover:text-white transition-colors duration-300"
+                                      style={{ WebkitTextStroke: '1px rgba(255,255,255,0.3)' }}>
+                                    {item.label}
+                                </span>
+                            </a>
+                        </M.div>
+                        ))}
+                    </div>
+                    
+                    <M.div 
+                        custom={5}
+                        variants={linkVariants}
+                        className="mt-12 pt-12 border-t border-white/10"
+                    >
+                        <a 
+                            href="#contact"
+                            onClick={() => setIsOpen(false)}
+                            className="inline-flex items-center justify-center w-full py-4 bg-white text-black font-mono text-sm uppercase tracking-widest font-bold"
+                        >
+                            Start Project
                         </a>
                     </M.div>
-                    ))}
                 </div>
-                
-                <M.div 
-                    custom={5}
-                    variants={linkVariants}
-                    className="mt-12 pt-12 border-t border-white/10"
-                >
-                    <a 
-                        href="#contact"
-                        onClick={() => setIsOpen(false)}
-                        className="inline-flex items-center justify-center w-full py-4 bg-white text-black font-mono text-sm uppercase tracking-widest font-bold"
-                    >
-                        Start Project
-                    </a>
-                </M.div>
              </div>
 
              {/* Footer Info */}

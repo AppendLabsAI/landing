@@ -1,0 +1,22 @@
+{
+  "name": "AppendLabs | AI Infrastructure",
+  "short_name": "AppendLabs",
+  "description": "Append Intelligence to Your Infrastructure - Production-grade AI infrastructure and intelligent automation",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "technology"],
+  "lang": "en",
+  "dir": "ltr"
+}
+

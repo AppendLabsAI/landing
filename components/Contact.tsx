@@ -196,7 +196,7 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <section id={SectionId.CONTACT} className="py-20 md:py-32 bg-black relative border-t border-brand-border overflow-hidden min-h-screen flex items-center">
+    <section id={SectionId.CONTACT} className="py-16 md:py-24 lg:py-32 xl:py-40 bg-black relative border-t border-brand-border overflow-hidden min-h-[85vh] md:min-h-screen flex items-center">
       <InteractiveGlobe />
       
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full pointer-events-none">
@@ -209,11 +209,11 @@ const Contact: React.FC = () => {
                         <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
                         <span className="text-[10px] font-mono uppercase tracking-widest text-green-400">Secure Uplink Available</span>
                     </div>
-                    <h2 className="font-heading font-black text-5xl md:text-6xl text-white mb-6 tracking-tighter leading-[0.9]">
+                    <h2 className="font-heading font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mb-4 md:mb-6 tracking-tighter leading-[0.9]">
                         INITIALIZE<br/>PROTOCOL
                     </h2>
-                    <p className="text-brand-muted text-base md:text-lg font-sans font-light leading-relaxed">
-                        Execute your intelligence strategy. <br/>
+                    <p className="text-brand-muted text-sm sm:text-base md:text-lg font-sans font-light leading-relaxed">
+                        Execute your intelligence strategy. <br className="hidden sm:block"/>
                         Initialize a secure channel below to begin architectural assessment.
                     </p>
                 </div>
@@ -236,7 +236,7 @@ const Contact: React.FC = () => {
                         </div>
                         <div className="ml-4 text-white/30 text-[10px] uppercase tracking-wider flex items-center gap-2">
                              <Terminal size={10} />
-                             guest@appendlabs — bash
+                             guest@appendlabs ~ bash
                         </div>
                     </div>
 
@@ -274,7 +274,18 @@ const Contact: React.FC = () => {
 
                                     <TerminalInput 
                                         label="config.objective"
-                                        options={['AI Agent Development', 'RAG Implementation', 'Cloud Infrastructure', 'Full Stack Engineering']}
+                                        options={[
+                                            'AI Agent Development',
+                                            'RAG Implementation',
+                                            'Business Optimization Systems',
+                                            'Operational Intelligence Systems',
+                                            'Internal AI & Automation Tools',
+                                            'MCP Service / Client',
+                                            'Cloud Infrastructure',
+                                            'Custom AI Solutions',
+                                            'AI Consulting & Strategy',
+                                            'Others'
+                                        ]}
                                         value={formData.type}
                                         onChange={(v: string) => setFormData({...formData, type: v})}
                                     />

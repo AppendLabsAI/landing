@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="bg-black relative pt-12 md:pt-32 pb-8 md:pb-10 overflow-hidden border-t border-brand-border">
+    <footer className="bg-black relative pt-12 md:pt-20 lg:pt-28 xl:pt-32 pb-6 md:pb-8 lg:pb-10 overflow-hidden border-t border-brand-border">
       <div className="max-w-[95rem] mx-auto px-6 md:px-8">
         
         {/* Mobile: Top Action Row */}
@@ -54,8 +54,8 @@ const Footer: React.FC = () => {
         </div>
 
         {/* Massive Signature */}
-        <div className="relative mt-12 md:mt-20 mb-8 overflow-hidden select-none">
-            <h1 className="font-heading font-black text-[15vw] md:text-[18vw] leading-[0.85] md:leading-[0.8] text-white tracking-tighter opacity-90 text-left mix-blend-difference">
+        <div className="relative mt-10 md:mt-16 lg:mt-20 mb-6 md:mb-8 overflow-hidden select-none">
+            <h1 className="font-heading font-black text-[15vw] sm:text-[16vw] md:text-[17vw] lg:text-[18vw] leading-[0.85] md:leading-[0.8] text-white tracking-tighter opacity-90 text-left mix-blend-difference">
                 APPEND<br className="md:hidden"/>LABS
             </h1>
         </div>

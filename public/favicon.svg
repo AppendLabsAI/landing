@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Background -->
+  <rect width="100" height="100" fill="#000000"/>
+  
+  <!-- Letter A -->
+  <path d="M 30 20 L 50 70 L 70 20" 
+        stroke="#FFFFFF" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        fill="none"/>
+  
+  <!-- Horizontal line in A -->
+  <line x1="40" y1="45" 
+        x2="60" y2="45" 
+        stroke="#FFFFFF" 
+        stroke-width="6" 
+        stroke-linecap="round"/>
+  
+  <!-- Small accent dot -->
+  <circle cx="75" cy="25" r="3" fill="#FFFFFF" opacity="0.8"/>
+</svg>
+

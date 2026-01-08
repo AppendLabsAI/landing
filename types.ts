@@ -6,6 +6,9 @@ export interface ServiceItem {
   description: string;
   icon: LucideIcon;
   tags: string[];
+  detailedDescription?: string;
+  useCases?: string[];
+  keyFeatures?: string[];
 }
 
 export interface NavItem {

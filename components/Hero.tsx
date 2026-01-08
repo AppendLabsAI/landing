@@ -192,7 +192,7 @@ const Hero: React.FC = () => {
         className="absolute inset-0 z-0"
       />
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col items-center justify-center pointer-events-none h-full pt-28 md:pt-0">
+      <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col items-center justify-center pointer-events-none h-full pt-24 sm:pt-28 md:pt-0">
           
           {/* Badge */}
           <M.div 
@@ -220,27 +220,36 @@ const Hero: React.FC = () => {
               </h1>
           </div>
           
-          {/* Subtext */}
+          {/* Tagline */}
           <M.p 
              initial={{ opacity: 0 }}
              animate={{ opacity: 1 }}
              transition={{ duration: 1, delay: 0.5 }}
-             className="mt-8 md:mt-12 max-w-[85%] sm:max-w-xl mx-auto text-white/60 text-sm sm:text-base font-mono leading-relaxed text-center"
+             className="mt-8 md:mt-12 max-w-[85%] sm:max-w-xl mx-auto text-white/80 text-base sm:text-lg md:text-xl font-mono leading-relaxed text-center font-medium"
           >
-             Architecting the neural pathways of modern enterprise.
-             <span className="block mt-2 text-white/90">Deterministic Agents. Air-Gapped RAG.</span>
+             Append Intelligence to Your Infrastructure
+          </M.p>
+          
+          {/* Subtext */}
+          <M.p 
+             initial={{ opacity: 0 }}
+             animate={{ opacity: 1 }}
+             transition={{ duration: 1, delay: 0.7 }}
+             className="hidden md:block mt-4 md:mt-6 max-w-[85%] sm:max-w-xl mx-auto text-white/60 text-sm sm:text-base font-sans leading-relaxed text-center"
+          >
+             Reliable, secure, and cost-optimized AI infrastructure built to reduce workload and scale with your business.
           </M.p>
       </div>
 
       {/* Scroll Indicator */}
       <M.div 
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/20"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 text-white/20 z-10"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       >
-         <div className="flex flex-col items-center gap-2">
+         <div className="flex flex-col items-center justify-center gap-2">
             <span className="font-mono text-[9px] uppercase tracking-widest">Scroll</span>
-            <ArrowDown size={14} />
+            <ArrowDown size={14} className="mx-auto" />
          </div>
       </M.div>
     </section>
