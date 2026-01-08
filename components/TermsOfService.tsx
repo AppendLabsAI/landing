@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Home, ArrowLeft, FileText, Calendar } from 'lucide-react';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import SEO from './SEO';
 
 const M = motion as any;
 
