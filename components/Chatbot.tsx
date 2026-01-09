@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, Loader2, Mic, MicOff, RefreshCw, AlertCircle } from 'lucide-react';
+import { MessageCircle, X, Send, Loader2, Mic, MicOff, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const M = motion as any;
@@ -16,7 +16,7 @@ interface Message {
   retryable?: boolean;
 }
 
-const MAX_MESSAGES = 20; // Keep last 20 messages (10 user + 10 assistant)
+const MAX_MESSAGES = 20;
 
 const Chatbot: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +24,7 @@ const Chatbot: React.FC = () => {
     {
       id: '1',
       role: 'assistant',
-      content: 'Hi! I\'m Append, your AI infrastructure advisor. I\'m here to help you discover how AppendLabs can transform your business with intelligent automation and AI solutions. What would you like to know?',
+      content: 'Hi there! 👋 I\'m AppendAI, your friendly AI assistant for AppendLabs. I\'m here to help you discover how we can transform your business with intelligent automation and AI solutions. What would you like to know?',
       timestamp: new Date()
     }
   ]);
@@ -46,10 +46,8 @@ const Chatbot: React.FC = () => {
     scrollToBottom();
   }, [messages]);
 
-  // Trim messages if they exceed the limit, keeping recent ones
   useEffect(() => {
     if (messages.length > MAX_MESSAGES) {
-      // Keep the first message (greeting) and the most recent messages
       const firstMessage = messages[0];
       const recentMessages = messages.slice(-(MAX_MESSAGES - 1));
       setMessages([firstMessage, ...recentMessages]);
@@ -62,7 +60,6 @@ const Chatbot: React.FC = () => {
     }
   }, [isOpen]);
 
-  // Lock body scroll on mobile when open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -96,7 +93,6 @@ const Chatbot: React.FC = () => {
       };
 
       recognition.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error);
         setIsListening(false);
         setRecordingTime(0);
         if (recordingTimerRef.current) {
@@ -104,7 +100,6 @@ const Chatbot: React.FC = () => {
           recordingTimerRef.current = null;
         }
 
-        // User-friendly error messages
         let errorMessage = 'Speech recognition failed. Please try again.';
         switch (event.error) {
           case 'no-speech':
@@ -119,14 +114,8 @@ const Chatbot: React.FC = () => {
           case 'network':
             errorMessage = 'Network error. Please check your connection and try again.';
             break;
-          case 'aborted':
-            // User stopped recording, no error needed
-            return;
-          default:
-            errorMessage = `Speech recognition error: ${event.error}. Please try again.`;
         }
         setSpeechError(errorMessage);
-        // Clear error after 5 seconds
         setTimeout(() => setSpeechError(null), 5000);
       };
 
@@ -134,7 +123,6 @@ const Chatbot: React.FC = () => {
         setIsListening(true);
         setRecordingTime(0);
         setSpeechError(null);
-        // Start recording timer
         recordingTimerRef.current = setInterval(() => {
           setRecordingTime(prev => prev + 1);
         }, 1000);
@@ -195,12 +183,10 @@ const Chatbot: React.FC = () => {
     let userMessage: Message;
     let messageContent = messageToSend;
 
-    // If retrying, find the original message
     if (retryMessageId) {
       const failedMessage = messages.find(m => m.id === retryMessageId);
       if (failedMessage && failedMessage.role === 'user') {
         messageContent = failedMessage.content;
-        // Remove the failed message and its error response
         setMessages(prev => prev.filter(m => m.id !== retryMessageId && m.id !== `error-${retryMessageId}`));
       }
     }
@@ -225,8 +211,6 @@ const Chatbot: React.FC = () => {
 
     try {
       const { sendChatMessage } = await import('@/lib/chatbot-api');
-      // Filter out error messages and keep all valid messages (both user and assistant) 
-      // to maintain full conversation context for better understanding
       const conversationHistory = messages
         .filter(m => !m.error)
         .map(m => ({
@@ -250,26 +234,22 @@ const Chatbot: React.FC = () => {
 
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error: any) {
-      console.error('Chat error:', error);
-      
-      // Enhanced error detection and user-friendly messages
       let errorContent = 'Sorry, I\'m having trouble connecting right now. ';
       let isRetryable = true;
       
-      // Check for specific error types
-      if (error?.message?.includes('rate limit') || error?.message?.includes('429') || error?.message?.includes('Rate limit')) {
+      if (error?.message?.includes('rate limit') || error?.message?.includes('429')) {
         errorContent = 'Too many requests. Please wait a moment and try again. ';
-      } else if (error?.isNetworkError || error?.message?.includes('Network error') || error?.message?.includes('Failed to fetch') || error?.message?.includes('NetworkError') || error?.name === 'TypeError') {
+      } else if (error?.isNetworkError || error?.message?.includes('Network error')) {
         errorContent = 'Network error. Please check your internet connection and try again. ';
-      } else if (error?.message?.includes('401') || error?.message?.includes('403') || error?.message?.includes('Authentication') || error?.message?.includes('Invalid API key')) {
+      } else if (error?.message?.includes('401') || error?.message?.includes('403') || error?.message?.includes('Invalid API key')) {
         errorContent = 'Authentication error. The API key may be missing or invalid. Please contact support. ';
-        isRetryable = false; // API key errors shouldn't be retried without fixing the key
+        isRetryable = false;
       } else if (error?.message?.includes('not configured') || error?.message?.includes('VITE_OPENAI_API_KEY')) {
         errorContent = 'Service configuration error. Please contact support at hello@appendlabs.com. ';
-        isRetryable = false; // Configuration errors need admin intervention
+        isRetryable = false;
       } else if (error?.message?.includes('Empty response')) {
         errorContent = 'Received empty response. Please try again. ';
-      } else if (error?.message?.includes('timeout') || error?.message?.includes('Timeout')) {
+      } else if (error?.message?.includes('timeout')) {
         errorContent = 'Request timed out. Please try again. ';
       }
 
@@ -282,7 +262,6 @@ const Chatbot: React.FC = () => {
         retryable: isRetryable
       };
 
-      // Mark the user message as retryable only if the error is retryable
       setMessages(prev => prev.map(m => 
         m.id === userMessage.id ? { ...m, error: true, retryable: isRetryable } : m
       ));
@@ -294,23 +273,15 @@ const Chatbot: React.FC = () => {
   };
 
   const handleRetry = async (messageId: string) => {
-    // Find the failed message
     const failedMessage = messages.find(m => m.id === messageId);
     if (!failedMessage || failedMessage.role !== 'user') return;
     
-    // Clean up: Remove all error messages (both assistant error messages and the error-marked user message)
-    setMessages(prev => {
-      const cleaned = prev.filter(m => {
-        // Remove assistant error messages
-        if (m.error && m.role === 'assistant') return false;
-        // Remove the user message if it's the one being retried
-        if (m.id === messageId && m.error) return false;
-        return true;
-      });
-      return cleaned;
-    });
+    setMessages(prev => prev.filter(m => {
+      if (m.error && m.role === 'assistant') return false;
+      if (m.id === messageId && m.error) return false;
+      return true;
+    }));
     
-    // Wait a bit for state to update, then retry
     setTimeout(() => {
       handleSend(messageId);
     }, 100);
@@ -325,7 +296,6 @@ const Chatbot: React.FC = () => {
 
   return (
     <>
-      {/* Chat Button - Hidden when chat is open on mobile */}
       <M.button
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: isOpen ? 0 : 1, opacity: isOpen ? 0 : 1 }}
@@ -337,19 +307,17 @@ const Chatbot: React.FC = () => {
         <MessageCircle size={16} className="sm:w-[18px] sm:h-[18px] md:w-5 md:h-5 transition-transform group-hover:scale-110" />
       </M.button>
 
-      {/* Chat Window */}
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Mobile: Full Screen Container */}
+            {/* Mobile: Full Screen */}
             <M.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="fixed inset-0 z-[100] md:hidden bg-black flex flex-col safe-area-inset"
+              className="fixed inset-0 z-[100] md:hidden bg-black flex flex-col"
             >
-              {/* Minimal Mobile Header */}
               <div className="flex items-center justify-between px-4 py-3.5 border-b border-white/5 bg-black/95 backdrop-blur-sm">
                 <div className="flex items-center gap-2.5">
                   <div className="relative">
@@ -359,27 +327,25 @@ const Chatbot: React.FC = () => {
                     <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-green-500 border-2 border-black"></div>
                   </div>
                   <div>
-                    <h3 className="font-heading font-bold text-white text-sm leading-tight">Append</h3>
+                    <h3 className="font-heading font-bold text-white text-sm leading-tight">AppendAI</h3>
                     <p className="text-[9px] text-brand-muted font-mono leading-tight">Online</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-2 hover:bg-white/10 rounded-lg transition-colors -mr-1 touch-manipulation"
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors -mr-1"
                   aria-label="Close chat"
                 >
                   <X size={20} className="text-white/70" />
                 </button>
               </div>
 
-              {/* Messages Area - Mobile */}
-              <div className="flex-1 overflow-y-auto px-4 py-5 space-y-3 overscroll-contain">
-                {messages.map((message, index) => (
+              <div className="flex-1 overflow-y-auto px-4 py-5 space-y-3">
+                {messages.map((message) => (
                   <M.div
                     key={message.id}
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.015 }}
                     className={cn(
                       "flex w-full flex-col",
                       message.role === 'user' ? 'items-end' : 'items-start'
@@ -387,7 +353,7 @@ const Chatbot: React.FC = () => {
                   >
                     <div
                       className={cn(
-                        "max-w-[85%] sm:max-w-[80%] rounded-2xl px-4 py-3 shadow-sm relative",
+                        "max-w-[85%] rounded-2xl px-4 py-3 shadow-sm relative",
                         message.role === 'user'
                           ? "bg-white text-black font-medium rounded-br-sm"
                           : message.error
@@ -423,7 +389,6 @@ const Chatbot: React.FC = () => {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Speech Error Message - Mobile */}
               {speechError && (
                 <M.div
                   initial={{ opacity: 0, y: 10 }}
@@ -431,15 +396,13 @@ const Chatbot: React.FC = () => {
                   exit={{ opacity: 0 }}
                   className="px-4"
                 >
-                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2 flex items-start gap-2">
-                    <AlertCircle size={14} className="text-red-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-xs text-red-400 flex-1">{speechError}</p>
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
+                    <p className="text-xs text-red-400">{speechError}</p>
                   </div>
                 </M.div>
               )}
 
-              {/* Input Area - Mobile */}
-              <div className="px-4 pb-4 pt-3.5 border-t border-white/5 bg-black/95 backdrop-blur-sm safe-area-inset-bottom">
+              <div className="px-4 pb-4 pt-3.5 border-t border-white/5 bg-black/95 backdrop-blur-sm">
                 <div className="flex gap-2 items-center">
                   <M.button
                     onClick={toggleVoiceInput}
@@ -447,12 +410,11 @@ const Chatbot: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={cn(
-                      "w-10 h-10 rounded-xl flex items-center justify-center transition-all touch-manipulation flex-shrink-0 relative",
+                      "w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0 relative",
                       isListening
                         ? "bg-red-500/20 text-red-400 hover:bg-red-500/30"
                         : "bg-white/5 text-white/60 hover:text-white/90 hover:bg-white/10 border border-white/10"
                     )}
-                    aria-label={isListening ? "Stop recording" : "Start voice input"}
                   >
                     {isListening ? (
                       <>
@@ -464,25 +426,22 @@ const Chatbot: React.FC = () => {
                       <Mic size={18} />
                     )}
                   </M.button>
-                  <div className="flex-1 relative">
-                    <input
-                      ref={inputRef}
-                      type="text"
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      placeholder={isListening ? `Recording... ${recordingTime}s` : "Type a message..."}
-                      disabled={isLoading || isListening}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-white/20 focus:bg-white/10 transition-all disabled:opacity-50"
-                    />
-                  </div>
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder={isListening ? `Recording... ${recordingTime}s` : "Type a message..."}
+                    disabled={isLoading || isListening}
+                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-white/20 focus:bg-white/10 transition-all disabled:opacity-50"
+                  />
                   <M.button
                     onClick={handleSend}
                     disabled={!input.trim() || isLoading || isListening}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center hover:bg-white/90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0 touch-manipulation shadow-md"
-                    aria-label="Send message"
+                    className="w-10 h-10 bg-white text-black rounded-xl flex items-center justify-center hover:bg-white/90 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0 shadow-md"
                   >
                     {isLoading ? (
                       <Loader2 size={18} className="animate-spin" />
@@ -494,55 +453,42 @@ const Chatbot: React.FC = () => {
               </div>
             </M.div>
 
-            {/* Desktop: Compact Window */}
+            {/* Desktop: Modal Window */}
             <M.div
               initial={{ opacity: 0, scale: 0.96, y: 8 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 8 }}
               transition={{ type: "spring", stiffness: 400, damping: 35 }}
               className="hidden md:flex fixed bottom-5 right-5 lg:bottom-6 lg:right-6 z-[100] w-[360px] lg:w-[380px] xl:w-[400px] h-[580px] lg:h-[600px] xl:h-[620px] bg-black border border-white/10 rounded-xl lg:rounded-2xl shadow-2xl flex-col overflow-hidden backdrop-blur-xl pointer-events-auto"
-              onClick={(e) => e.stopPropagation()}
             >
-              {/* Desktop Header */}
-              <div className="flex items-center justify-between px-4 md:px-5 lg:px-6 xl:px-7 py-3.5 md:py-4 lg:py-4.5 border-b border-white/5 bg-gradient-to-b from-black/95 to-black/80 backdrop-blur-md relative z-10">
-                <div className="flex items-center gap-2.5 md:gap-3 lg:gap-3.5">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-white/5 bg-gradient-to-b from-black/95 to-black/80 backdrop-blur-md">
+                <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="w-9 h-9 md:w-10 md:h-10 lg:w-11 lg:h-11 xl:w-12 xl:h-12 rounded-full bg-gradient-to-br from-white/15 to-white/5 border border-white/20 flex items-center justify-center shadow-lg">
-                      <MessageCircle size={18} className="md:w-5 md:h-5 lg:w-[22px] lg:h-[22px] xl:w-6 xl:h-6 text-white" />
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-white/15 to-white/5 border border-white/20 flex items-center justify-center shadow-lg">
+                      <MessageCircle size={20} className="text-white" />
                     </div>
-                    <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 md:w-3 md:h-3 lg:w-3.5 lg:h-3.5 rounded-full bg-green-500 border-2 border-black shadow-lg shadow-green-500/50"></div>
+                    <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-500 border-2 border-black shadow-lg shadow-green-500/50"></div>
                   </div>
                   <div>
-                    <h3 className="font-heading font-bold text-white text-sm md:text-base lg:text-lg leading-tight">Append</h3>
-                    <p className="text-[9px] md:text-[10px] lg:text-[11px] text-brand-muted font-mono leading-tight">Online</p>
+                    <h3 className="font-heading font-bold text-white text-base leading-tight">AppendAI</h3>
+                    <p className="text-[10px] text-brand-muted font-mono leading-tight">Online</p>
                   </div>
                 </div>
                 <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    setIsOpen(false);
-                  }}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                  className="p-2 md:p-2.5 lg:p-2.5 hover:bg-white/10 active:bg-white/20 rounded-lg transition-colors group relative z-50 pointer-events-auto touch-manipulation"
+                  onClick={() => setIsOpen(false)}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                   aria-label="Close chat"
-                  type="button"
                 >
-                  <X size={16} className="md:w-[18px] md:h-[18px] lg:w-5 lg:h-5 text-white/70 group-hover:text-white transition-colors" />
+                  <X size={18} className="text-white/70" />
                 </button>
               </div>
 
-              {/* Messages Area - Desktop */}
-              <div className="flex-1 overflow-y-auto px-4 md:px-5 lg:px-6 xl:px-7 py-4 md:py-5 lg:py-6 xl:py-7 space-y-3 md:space-y-4 lg:space-y-4.5 custom-scrollbar">
-                {messages.map((message, index) => (
+              <div className="flex-1 overflow-y-auto px-5 py-6 space-y-4 custom-scrollbar">
+                {messages.map((message) => (
                   <M.div
                     key={message.id}
                     initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.015 }}
                     className={cn(
                       "flex w-full flex-col",
                       message.role === 'user' ? 'items-end' : 'items-start'
@@ -550,7 +496,7 @@ const Chatbot: React.FC = () => {
                   >
                     <div
                       className={cn(
-                        "max-w-[85%] md:max-w-[82%] lg:max-w-[80%] xl:max-w-[78%] rounded-xl lg:rounded-2xl px-3.5 md:px-4 lg:px-5 py-2.5 md:py-3 lg:py-3.5 shadow-sm relative",
+                        "max-w-[80%] rounded-xl px-4 py-3 shadow-sm relative",
                         message.role === 'user'
                           ? "bg-white text-black font-medium rounded-br-sm hover:shadow-md transition-shadow"
                           : message.error
@@ -558,24 +504,16 @@ const Chatbot: React.FC = () => {
                           : "bg-white/5 backdrop-blur-sm border border-white/10 text-white rounded-bl-sm hover:bg-white/7 transition-colors"
                       )}
                     >
-                      {message.error && (
-                        <AlertCircle size={14} className="absolute top-2 right-2 text-red-400" />
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{message.content}</p>
+                      {message.error && message.retryable && message.role === 'user' && (
+                        <button
+                          onClick={() => handleRetry(message.id)}
+                          className="mt-2 flex items-center gap-1 text-xs text-red-400 hover:text-red-300 transition-colors"
+                        >
+                          <RefreshCw size={11} />
+                          <span>Retry</span>
+                        </button>
                       )}
-                      <p className="text-sm md:text-sm lg:text-[15px] leading-relaxed whitespace-pre-wrap break-words pr-5">{message.content}</p>
-                      <div className="flex items-center justify-between mt-1.5 md:mt-2">
-                        <span className="text-[9px] md:text-[10px] lg:text-[11px] text-brand-muted font-mono opacity-60">
-                          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </span>
-                        {message.error && message.retryable && message.role === 'user' && (
-                          <button
-                            onClick={() => handleRetry(message.id)}
-                            className="flex items-center gap-1 text-[9px] md:text-[10px] text-red-400 hover:text-red-300 transition-colors ml-2"
-                          >
-                            <RefreshCw size={11} />
-                            <span>Retry</span>
-                          </button>
-                        )}
-                      </div>
                     </div>
                   </M.div>
                 ))}
@@ -585,82 +523,73 @@ const Chatbot: React.FC = () => {
                     animate={{ opacity: 1 }}
                     className="flex justify-start"
                   >
-                    <div className="bg-white/5 border border-white/10 rounded-xl lg:rounded-2xl rounded-bl-sm px-3.5 md:px-4 lg:px-5 py-2.5 md:py-3 lg:py-3.5 flex items-center gap-2 md:gap-2.5">
-                      <Loader2 size={13} className="md:w-[14px] md:h-[14px] lg:w-4 lg:h-4 text-white/60 animate-spin" />
-                      <span className="text-[11px] md:text-xs lg:text-[13px] text-white/60 font-mono">Thinking...</span>
+                    <div className="bg-white/5 border border-white/10 rounded-xl rounded-bl-sm px-4 py-3 flex items-center gap-2">
+                      <Loader2 size={14} className="text-white/60 animate-spin" />
+                      <span className="text-xs text-white/60 font-mono">Thinking...</span>
                     </div>
                   </M.div>
                 )}
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Speech Error Message - Desktop */}
               {speechError && (
                 <M.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
-                  className="px-4 md:px-5 lg:px-6 xl:px-7"
+                  className="px-5"
                 >
-                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2 flex items-start gap-2">
-                    <AlertCircle size={14} className="text-red-400 mt-0.5 flex-shrink-0" />
-                    <p className="text-xs text-red-400 flex-1">{speechError}</p>
+                  <div className="bg-red-500/10 border border-red-500/30 rounded-lg px-3 py-2">
+                    <p className="text-xs text-red-400">{speechError}</p>
                   </div>
                 </M.div>
               )}
 
-              {/* Input Area - Desktop */}
-              <div className="px-4 md:px-5 lg:px-6 xl:px-7 pb-4 md:pb-5 lg:pb-6 pt-3.5 md:pt-4 lg:pt-5 border-t border-white/5 bg-gradient-to-b from-black/80 to-black/95 backdrop-blur-md relative z-10">
-                <div className="flex gap-2 md:gap-2.5 lg:gap-3 items-center">
+              <div className="px-5 pb-5 pt-4 border-t border-white/5 bg-gradient-to-b from-black/80 to-black/95 backdrop-blur-md">
+                <div className="flex gap-2.5 items-center">
                   <M.button
                     onClick={toggleVoiceInput}
                     disabled={isLoading}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className={cn(
-                      "w-10 h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center transition-all touch-manipulation flex-shrink-0 relative border",
+                      "w-11 h-11 rounded-xl flex items-center justify-center transition-all flex-shrink-0 relative border",
                       isListening
                         ? "bg-red-500/20 text-red-400 hover:bg-red-500/30 border-red-500/30"
                         : "bg-white/5 text-white/60 hover:text-white/90 hover:bg-white/10 border-white/10"
                     )}
-                    aria-label={isListening ? "Stop recording" : "Start voice input"}
-                    type="button"
                   >
                     {isListening ? (
                       <>
-                        <MicOff size={16} className="md:w-[18px] md:h-[18px] lg:w-5 lg:h-5" />
-                        <span className="absolute -top-0.5 -right-0.5 w-2 h-2 md:w-2.5 md:h-2.5 bg-red-500 rounded-full animate-ping"></span>
-                        <span className="absolute -top-0.5 -right-0.5 w-2 h-2 md:w-2.5 md:h-2.5 bg-red-500 rounded-full"></span>
+                        <MicOff size={18} />
+                        <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full animate-ping"></span>
+                        <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
                       </>
                     ) : (
-                      <Mic size={16} className="md:w-[18px] md:h-[18px] lg:w-5 lg:h-5" />
+                      <Mic size={18} />
                     )}
                   </M.button>
-                  <div className="flex-1 relative">
-                    <input
-                      ref={inputRef}
-                      type="text"
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      placeholder={isListening ? `Recording... ${recordingTime}s` : "Type your message..."}
-                      disabled={isLoading || isListening}
-                      className="w-full bg-white/5 border border-white/10 rounded-lg md:rounded-xl lg:rounded-2xl px-4 md:px-5 lg:px-6 py-2.5 md:py-3 lg:py-3.5 text-white placeholder:text-white/40 text-sm md:text-sm lg:text-[15px] focus:outline-none focus:border-white/25 focus:bg-white/10 focus:shadow-lg focus:shadow-white/5 transition-all disabled:opacity-50"
-                    />
-                  </div>
+                  <input
+                    ref={inputRef}
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder={isListening ? `Recording... ${recordingTime}s` : "Type your message..."}
+                    disabled={isLoading || isListening}
+                    className="flex-1 bg-white/5 border border-white/10 rounded-xl px-5 py-3 text-white placeholder:text-white/40 text-sm focus:outline-none focus:border-white/25 focus:bg-white/10 transition-all disabled:opacity-50"
+                  />
                   <M.button
                     onClick={handleSend}
                     disabled={!input.trim() || isLoading || isListening}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 bg-white text-black rounded-lg md:rounded-xl lg:rounded-2xl flex items-center justify-center hover:bg-white/95 hover:shadow-lg hover:shadow-white/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0 touch-manipulation shadow-md"
-                    aria-label="Send message"
-                    type="button"
+                    className="w-11 h-11 bg-white text-black rounded-xl flex items-center justify-center hover:bg-white/95 transition-all disabled:opacity-40 disabled:cursor-not-allowed flex-shrink-0 shadow-md"
                   >
                     {isLoading ? (
-                      <Loader2 size={16} className="md:w-[18px] md:h-[18px] lg:w-5 lg:h-5 animate-spin" />
+                      <Loader2 size={18} className="animate-spin" />
                     ) : (
-                      <Send size={16} className="md:w-[18px] md:h-[18px] lg:w-5 lg:h-5" />
+                      <Send size={18} />
                     )}
                   </M.button>
                 </div>
