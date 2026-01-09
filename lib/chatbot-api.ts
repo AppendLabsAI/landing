@@ -85,30 +85,8 @@ export const sendChatMessage = async (
 };
 
 // Fallback response handler when API is not available
+// All responses should come from the LLM - this is only for API configuration errors
 const handleFallbackResponse = (message: string): string => {
-  const lowerMessage = message.toLowerCase();
-
-  // Handle contact questions
-  if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('reach') || lowerMessage.includes('get in touch')) {
-    return 'You can reach us at hello@appendlabs.com or fill out our contact form in the contact section of our website.';
-  }
-
-  // Handle founder questions - smooth redirect
-  if (lowerMessage.includes('founder') || lowerMessage.includes('team') || lowerMessage.includes('who started') || lowerMessage.includes('ceo') || lowerMessage.includes('leadership') || lowerMessage.includes('who created')) {
-    return 'AppendLabs is focused on delivering AI infrastructure solutions that transform businesses. We\'d love to discuss how our services can help you - our team is available at hello@appendlabs.com. What specific AI challenges is your business facing?';
-  }
-
-  // Handle pricing questions
-  if (lowerMessage.includes('price') || lowerMessage.includes('cost') || lowerMessage.includes('pricing') || lowerMessage.includes('how much')) {
-    return 'Pricing depends on scope and complexity, and begins with an audit to understand your needs. Contact us at hello@appendlabs.com for a customized quote based on your specific requirements.';
-  }
-
-  // Handle timeline questions
-  if (lowerMessage.includes('timeline') || lowerMessage.includes('how long') || lowerMessage.includes('duration') || lowerMessage.includes('time to')) {
-    return 'Timelines vary based on project complexity and are defined after our discovery phase. We provide clear timelines during the proposal phase. Contact us at hello@appendlabs.com to discuss your project timeline.';
-  }
-
-  // Universal fallback - never say "I don't know"
-  return 'AppendLabs helps businesses integrate AI to improve efficiency, scale operations, and reduce complexity. We start by understanding your business and identifying where AI can add real value. Contact us at hello@appendlabs.com or use the #contact form to discuss how we can help with your specific needs.';
+  throw new Error('OpenAI API is not configured. Please set VITE_OPENAI_API_KEY environment variable.');
 };
 
