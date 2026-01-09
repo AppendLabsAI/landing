@@ -20,8 +20,9 @@ export const sendChatMessage = async (
   }
 
   try {
-    // Build conversation context - include last 10 messages for better context
-    const recentHistory = conversationHistory.slice(-10);
+    // Build conversation context - include last 20 messages for comprehensive context awareness
+    // This allows the AI to understand longer conversations and reference earlier topics
+    const recentHistory = conversationHistory.slice(-20);
     
     const messages: ChatMessage[] = [
       { role: 'system', content: SYSTEM_PROMPT },
@@ -41,11 +42,12 @@ export const sendChatMessage = async (
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: messages,
-        temperature: 0.85, // Increased for more varied and creative responses
-        max_tokens: 500, // Increased to allow for more detailed, thoughtful answers
-        top_p: 0.95,
-        frequency_penalty: 0.6, // Increased to reduce repetition and encourage variety
-        presence_penalty: 0.3 // Increased to encourage diverse topics and approaches
+        temperature: 1, // Maximum freedom for natural, varied responses
+        max_tokens: 800, // Increased significantly to allow for detailed, thoughtful, comprehensive answers
+        top_p: 0.95, // Slightly lower for better coherence while maintaining creativity
+        frequency_penalty: 0.7, // Higher to strongly reduce repetition and encourage fresh perspectives
+        presence_penalty: 0.4, // Higher to encourage exploring diverse topics and angles
+        response_format: { type: 'text' } // Ensure natural text responses
       })
     });
 
@@ -88,7 +90,7 @@ const handleFallbackResponse = (message: string): string => {
 
   // Handle contact questions
   if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('reach') || lowerMessage.includes('get in touch')) {
-    return 'You can reach us at hello@appendlabs.com or fill out our contact form in the #contact section of our website.';
+    return 'You can reach us at hello@appendlabs.com or fill out our contact form in the contact section of our website.';
   }
 
   // Handle founder questions - smooth redirect
@@ -104,26 +106,6 @@ const handleFallbackResponse = (message: string): string => {
   // Handle timeline questions
   if (lowerMessage.includes('timeline') || lowerMessage.includes('how long') || lowerMessage.includes('duration') || lowerMessage.includes('time to')) {
     return 'Timelines vary based on project complexity and are defined after our discovery phase. We provide clear timelines during the proposal phase. Contact us at hello@appendlabs.com to discuss your project timeline.';
-  }
-
-  // Handle service/general AI questions
-  if (lowerMessage.includes('service') || lowerMessage.includes('what do you do') || lowerMessage.includes('what can you help') || lowerMessage.includes('help my company')) {
-    return 'We help businesses understand where AI fits, integrate it effectively, and operate it reliably. This includes workflow automation, internal tools, decision support, and AI infrastructure. Contact us at hello@appendlabs.com to discuss how we can help your business.';
-  }
-
-  // Handle AI/technology questions
-  if (lowerMessage.includes('ai') || lowerMessage.includes('automation') || lowerMessage.includes('chatbot') || lowerMessage.includes('machine learning')) {
-    return 'AppendLabs helps businesses identify where AI can add value, select the right tools based on reliability and cost, and deploy production-ready solutions. We start by understanding your business before proposing solutions. Contact us at hello@appendlabs.com to learn more.';
-  }
-
-  // Handle optimization/business questions
-  if (lowerMessage.includes('optimize') || lowerMessage.includes('improve') || lowerMessage.includes('efficiency') || lowerMessage.includes('workflow')) {
-    return 'We help businesses optimize operations by identifying where time and resources are lost, then deploying AI solutions that integrate with your existing systems. Our approach focuses on practical, measurable improvements. Contact us at hello@appendlabs.com to discuss your optimization needs.';
-  }
-
-  // Handle tool/technology selection questions
-  if (lowerMessage.includes('tool') || lowerMessage.includes('model') || lowerMessage.includes('technology') || lowerMessage.includes('which ai')) {
-    return 'We select tools and models based on reliability, cost, security, and your specific business needs. We don\'t lock into one technology - we choose what works best for your situation. Contact us at hello@appendlabs.com to discuss your requirements.';
   }
 
   // Universal fallback - never say "I don't know"

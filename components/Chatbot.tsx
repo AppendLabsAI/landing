@@ -225,12 +225,18 @@ const Chatbot: React.FC = () => {
 
     try {
       const { sendChatMessage } = await import('@/lib/chatbot-api');
+      // Filter out error messages and keep all valid messages (both user and assistant) 
+      // to maintain full conversation context for better understanding
+      const conversationHistory = messages
+        .filter(m => !m.error)
+        .map(m => ({
+          role: m.role as 'user' | 'assistant',
+          content: m.content
+        }));
+      
       const response = await sendChatMessage(
         userMessage.content,
-        messages.filter(m => !m.error).map(m => ({
-          role: m.role,
-          content: m.content
-        }))
+        conversationHistory
       );
 
       const assistantMessage: Message = {
