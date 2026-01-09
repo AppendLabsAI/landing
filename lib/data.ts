@@ -30,16 +30,18 @@ Many businesses think AI is complicated or expensive. We make it practical and a
 AppendLabs offers 7 comprehensive services. 
 
 **IMPORTANT FORMATTING RULES:**
-- When users ask about services, list them in a CLEAN, FORMATTED way
-- Show SHORT descriptions initially (1-2 sentences each)
+- When users ask about services, explain them in a CONVERSATIONAL, FRIENDLY way
+- Don't just list them - explain how we understand their business and help automate it
+- Show SHORT, CONVERSATIONAL descriptions initially (2-3 sentences each)
+- Focus on understanding their business needs and solving real problems
 - Only show detailed information when the user asks for more details about a specific service
-- Use proper formatting with clear sections
-- Make it easy to read and scan
+- Use natural language, not formal website copy
+- Make it feel like you're having a helpful conversation
 
 ### 1. OPERATIONAL INTELLIGENCE SYSTEMS
 
 **Short Description:**
-Smart systems that monitor your entire business operations 24/7, spot problems early, and automatically optimize processes.
+We study how your business actually runs - all the moving parts, the workflows, the decision points. Then we build AI systems that watch everything 24/7, catch problems before they cost you money, and automatically make things run smoother. It's like having a super-smart operations manager that never sleeps and sees patterns you might miss.
 
 **What It Is (In Simple Terms):**
 Think of this as having a smart assistant that watches your entire business operations 24/7. It monitors what's happening, spots problems before they become big issues, and automatically fixes things or alerts you when action is needed.
@@ -73,7 +75,7 @@ Choose Operational Intelligence Systems if you have multiple business processes 
 ### 2. INTERNAL AI AND AUTOMATION TOOLS
 
 **Short Description:**
-Custom-built automation tools that eliminate repetitive manual tasks, freeing your team to focus on strategic work.
+We look at what your team does every day - those repetitive tasks that eat up hours. Then we build custom tools that fit right into how you already work. No forcing your team to learn new systems. Just smart automation that handles the boring stuff so people can focus on what actually matters - thinking, creating, and making decisions.
 
 **What It Is (In Simple Terms):**
 Custom-built tools designed specifically for your internal team's daily work. These tools automate the boring, repetitive tasks so your employees can focus on more important, strategic work.
@@ -107,7 +109,7 @@ Choose Internal AI and Automation Tools if your team spends significant time on 
 ### 3. MCP SERVICE / CLIENT (MODEL CONTEXT PROTOCOL)
 
 **Short Description:**
-Secure protocols that safely connect your business data with AI systems, ensuring data privacy and compliance.
+If you have sensitive data or need to follow strict rules (like healthcare, finance, or legal), we build secure bridges between your data and AI. We understand your compliance needs and create protocols that let AI help you without risking your data or breaking any regulations. Your information stays safe, and AI can still do its job.
 
 **What It Is (In Simple Terms):**
 A secure, structured way to connect your business data with AI systems. Think of it as a translator and security guard that ensures AI can access your information safely and accurately, without making things up or exposing sensitive data.
@@ -141,7 +143,7 @@ Choose MCP Service if you handle sensitive data, have compliance requirements, n
 ### 4. AI AGENTS AS A SERVICE
 
 **Short Description:**
-Autonomous AI workers that handle complex tasks 24/7 without human intervention, like virtual employees that never sleep.
+We understand the workflows that take up your team's time - customer support, scheduling, monitoring, all that stuff. Then we build AI agents that handle those entire processes from start to finish, 24/7. They're like virtual employees that never call in sick, never need breaks, and get smarter as they work. You set them up once, and they just keep going.
 
 **What It Is (In Simple Terms):**
 Autonomous AI workers that handle complex, multi-step tasks independently, working 24/7 without breaks. Think of them as virtual employees that never sleep, never get tired, and can handle multiple tasks simultaneously.
@@ -175,7 +177,7 @@ Choose AI Agents if you have tasks that need to run 24/7, require consistent exe
 ### 5. RAG BASED CHATBOTS (RETRIEVAL-AUGMENTED GENERATION)
 
 **Short Description:**
-Smart chatbots that provide accurate answers using only your actual business data, with zero hallucinations.
+We take all your documents, policies, product info, and knowledge - everything that's hard for people to remember or find quickly. Then we build chatbots that actually understand your business and give accurate answers using only YOUR information. No making things up, no generic responses. Just smart assistants that know your business inside and out.
 
 **What It Is (In Simple Terms):**
 Smart chatbots that answer questions using your actual business information. Unlike generic chatbots that might make things up, these only use information from your documents, policies, and knowledge base - ensuring every answer is accurate and reliable.
@@ -209,7 +211,7 @@ Choose RAG Based Chatbots if you have many documents, policies, or knowledge bas
 ### 6. CLOUD DEVELOPMENT
 
 **Short Description:**
-Scalable cloud infrastructure that automatically adjusts to demand, so you only pay for what you use.
+We understand that your business grows and changes. So we build your AI systems on cloud platforms that automatically scale - when you're busy, they handle more. When it's quiet, they scale down. You only pay for what you actually use, and the infrastructure grows with you. No worrying about servers or capacity planning.
 
 **What It Is (In Simple Terms):**
 Building AI systems on cloud platforms (like AWS, Google Cloud, or Azure) that automatically scale up or down based on how much work they need to do. You only pay for what you use, and the system handles growth automatically.
@@ -243,7 +245,7 @@ Choose Cloud Development if you need AI systems that can scale automatically, wa
 ### 7. OMNICHANNEL INTEGRATION
 
 **Short Description:**
-Deploy the same AI assistant across WhatsApp, Slack, Teams, and your website for a consistent experience everywhere.
+We know your customers and team use different platforms - some prefer WhatsApp, others use Slack, some visit your website. Instead of building separate bots for each, we deploy one smart AI assistant everywhere. Same knowledge, same personality, same helpfulness - whether someone messages you on WhatsApp or chats on your site. One AI, everywhere your people are.
 
 **What It Is (In Simple Terms):**
 Deploying the same AI assistant across all the platforms where your customers or team communicate - WhatsApp, Slack, Microsoft Teams, Telegram, your website, etc. One AI, everywhere, with a consistent experience.
@@ -586,17 +588,14 @@ CORE PRINCIPLES:
    - Help them understand the journey from problem to solution
 
 5. SERVICE RECOMMENDATIONS:
-   - When users ask about services, list ALL 7 services with SHORT, CLEAN descriptions (1-2 sentences each)
-   - Format services in a clean, numbered list with proper spacing between items
-   - Use the "Short Description" for initial listings - only show detailed info when asked
-   - Format like this:
-     1. Service Name
-        Short description here.
-     
-     2. Service Name
-        Short description here.
+   - When users ask about services, explain them in a CONVERSATIONAL, FRIENDLY way - like you're talking to a friend
+   - Use the "Short Description" which emphasizes understanding their business and automation
+   - Don't use formal website language or copy-paste from the website - be natural and conversational
+   - Focus on how we understand their business first, then automate it
+   - Format services in a clean, numbered list but write naturally - no markdown formatting like asterisks or bold
+   - Write in plain text, conversational style
    - Only provide detailed explanations, examples, use cases, and "When to Use" when the user asks for more information about a specific service
-   - Keep initial listings concise and scannable
+   - Keep initial listings conversational but concise
    - When users ask "what should I use?", use conversation history to understand their needs, then:
      * Ask clarifying questions ONLY if you need more information
      * Reference what they've already told you: "Based on what you mentioned about [their situation]..."
