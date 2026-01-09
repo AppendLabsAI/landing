@@ -41,11 +41,11 @@ export const sendChatMessage = async (
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: messages,
-        temperature: 0.75, // Slightly lower for more consistent, but still flexible responses
-        max_tokens: 350, // Increased to allow for better explanations and recommendations
+        temperature: 0.85, // Increased for more varied and creative responses
+        max_tokens: 500, // Increased to allow for more detailed, thoughtful answers
         top_p: 0.95,
-        frequency_penalty: 0.3, // Increased to reduce repetition
-        presence_penalty: 0.2
+        frequency_penalty: 0.6, // Increased to reduce repetition and encourage variety
+        presence_penalty: 0.3 // Increased to encourage diverse topics and approaches
       })
     });
 
