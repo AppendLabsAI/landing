@@ -13,10 +13,10 @@ export const sendChatMessage = async (
   const apiKey = import.meta.env.VITE_OPENAI_API_KEY || '';
   
   if (!apiKey || apiKey.trim() === '') {
-    console.warn('OpenAI API key not found. Using fallback responses.');
+    console.warn('OpenAI API key not found.');
     console.warn('Available env keys:', Object.keys(import.meta.env));
-    // Fallback response if API key is not configured
-    return handleFallbackResponse(message);
+    // Throw error - let LLM handle all responses, no hardcoded fallbacks
+    throw new Error('OpenAI API is not configured. Please set VITE_OPENAI_API_KEY environment variable.');
   }
 
   try {
@@ -74,19 +74,9 @@ export const sendChatMessage = async (
       stack: error?.stack
     });
     
-    // Re-throw authentication errors so they can be handled by Chatbot component
-    if (error?.message?.includes('401') || error?.message?.includes('403') || error?.message?.includes('Invalid')) {
-      throw error;
-    }
-    
-    // Use fallback for other errors
-    return handleFallbackResponse(message);
+    // Re-throw all errors so they can be handled by Chatbot component
+    // No hardcoded fallbacks - let LLM handle all responses
+    throw error;
   }
-};
-
-// Fallback response handler when API is not available
-// All responses should come from the LLM - this is only for API configuration errors
-const handleFallbackResponse = (message: string): string => {
-  throw new Error('OpenAI API is not configured. Please set VITE_OPENAI_API_KEY environment variable.');
 };
 
