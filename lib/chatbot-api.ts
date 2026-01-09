@@ -10,7 +10,7 @@ export const sendChatMessage = async (
   conversationHistory: Array<{ role: 'user' | 'assistant'; content: string }>
 ): Promise<string> => {
   // Check if OpenAI API key is available
-  const apiKey = import.meta.env.VITE_OPENAI_API_KEY || '';
+  const apiKey = (import.meta.env as any).VITE_OPENAI_API_KEY || '';
   
   if (!apiKey || apiKey.trim() === '') {
     console.warn('OpenAI API key not found. Using fallback responses.');
