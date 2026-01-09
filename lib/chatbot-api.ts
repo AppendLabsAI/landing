@@ -50,14 +50,34 @@ export const sendChatMessage = async (
     });
 
     if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error?.message || 'Failed to get response');
+      const errorData = await response.json().catch(() => ({}));
+      const errorMessage = errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`;
+      console.error('OpenAI API error:', errorMessage, errorData);
+      throw new Error(errorMessage);
     }
 
     const data = await response.json();
-    return data.choices[0]?.message?.content?.trim() || 'Sorry, I couldn\'t generate a response.';
-  } catch (error) {
+    const content = data.choices[0]?.message?.content?.trim();
+    
+    if (!content) {
+      console.warn('OpenAI API returned empty response');
+      throw new Error('Empty response from API');
+    }
+    
+    return content;
+  } catch (error: any) {
     console.error('OpenAI API error:', error);
+    console.error('Error details:', {
+      message: error?.message,
+      stack: error?.stack
+    });
+    
+    // Re-throw authentication errors so they can be handled by Chatbot component
+    if (error?.message?.includes('401') || error?.message?.includes('403') || error?.message?.includes('Invalid')) {
+      throw error;
+    }
+    
+    // Use fallback for other errors
     return handleFallbackResponse(message);
   }
 };
