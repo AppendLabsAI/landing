@@ -252,28 +252,39 @@ const Chatbot: React.FC = () => {
     } catch (error: any) {
       console.error('Chat error:', error);
       
-      // User-friendly error messages
+      // Enhanced error detection and user-friendly messages
       let errorContent = 'Sorry, I\'m having trouble connecting right now. ';
-      if (error?.message?.includes('rate limit') || error?.message?.includes('429')) {
+      let isRetryable = true;
+      
+      // Check for specific error types
+      if (error?.message?.includes('rate limit') || error?.message?.includes('429') || error?.message?.includes('Rate limit')) {
         errorContent = 'Too many requests. Please wait a moment and try again. ';
-      } else if (error?.message?.includes('network') || error?.message?.includes('fetch')) {
-        errorContent = 'Network error. Please check your connection and try again. ';
-      } else if (error?.message?.includes('401') || error?.message?.includes('403')) {
-        errorContent = 'Authentication error. Please refresh the page and try again. ';
+      } else if (error?.isNetworkError || error?.message?.includes('Network error') || error?.message?.includes('Failed to fetch') || error?.message?.includes('NetworkError') || error?.name === 'TypeError') {
+        errorContent = 'Network error. Please check your internet connection and try again. ';
+      } else if (error?.message?.includes('401') || error?.message?.includes('403') || error?.message?.includes('Authentication') || error?.message?.includes('Invalid API key')) {
+        errorContent = 'Authentication error. The API key may be missing or invalid. Please contact support. ';
+        isRetryable = false; // API key errors shouldn't be retried without fixing the key
+      } else if (error?.message?.includes('not configured') || error?.message?.includes('VITE_OPENAI_API_KEY')) {
+        errorContent = 'Service configuration error. Please contact support at hello@appendlabs.com. ';
+        isRetryable = false; // Configuration errors need admin intervention
+      } else if (error?.message?.includes('Empty response')) {
+        errorContent = 'Received empty response. Please try again. ';
+      } else if (error?.message?.includes('timeout') || error?.message?.includes('Timeout')) {
+        errorContent = 'Request timed out. Please try again. ';
       }
 
       const errorMessage: Message = {
-        id: `error-${userMessage.id}`,
+        id: `error-${Date.now()}`,
         role: 'assistant',
-        content: errorContent + 'You can also contact us directly at hello@appendlabs.com',
+        content: errorContent + (isRetryable ? 'You can also contact us directly at hello@appendlabs.com.' : ''),
         timestamp: new Date(),
         error: true,
-        retryable: true
+        retryable: isRetryable
       };
 
-      // Mark the user message as retryable
+      // Mark the user message as retryable only if the error is retryable
       setMessages(prev => prev.map(m => 
-        m.id === userMessage.id ? { ...m, error: true, retryable: true } : m
+        m.id === userMessage.id ? { ...m, error: true, retryable: isRetryable } : m
       ));
 
       setMessages(prev => [...prev, errorMessage]);
@@ -282,8 +293,27 @@ const Chatbot: React.FC = () => {
     }
   };
 
-  const handleRetry = (messageId: string) => {
-    handleSend(messageId);
+  const handleRetry = async (messageId: string) => {
+    // Find the failed message
+    const failedMessage = messages.find(m => m.id === messageId);
+    if (!failedMessage || failedMessage.role !== 'user') return;
+    
+    // Clean up: Remove all error messages (both assistant error messages and the error-marked user message)
+    setMessages(prev => {
+      const cleaned = prev.filter(m => {
+        // Remove assistant error messages
+        if (m.error && m.role === 'assistant') return false;
+        // Remove the user message if it's the one being retried
+        if (m.id === messageId && m.error) return false;
+        return true;
+      });
+      return cleaned;
+    });
+    
+    // Wait a bit for state to update, then retry
+    setTimeout(() => {
+      handleSend(messageId);
+    }, 100);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

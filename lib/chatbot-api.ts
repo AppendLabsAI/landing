@@ -71,8 +71,17 @@ export const sendChatMessage = async (
     console.error('OpenAI API error:', error);
     console.error('Error details:', {
       message: error?.message,
-      stack: error?.stack
+      stack: error?.stack,
+      name: error?.name
     });
+    
+    // Enhance error messages for better detection
+    // Check for network/fetch errors first
+    if (error?.name === 'TypeError' || error?.message?.includes('Failed to fetch') || error?.message?.includes('NetworkError')) {
+      const networkError = new Error('Network error: Failed to connect to OpenAI API. Please check your internet connection.');
+      (networkError as any).isNetworkError = true;
+      throw networkError;
+    }
     
     // Re-throw all errors so they can be handled by Chatbot component
     // No hardcoded fallbacks - let LLM handle all responses
